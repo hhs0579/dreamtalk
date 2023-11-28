@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "14023959625",
+    "project_id": "metalk-95884",
+    "storage_bucket": "metalk-95884.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14023959625:android:fa940ee34a24766ba84b98",
+        "android_client_info": {
+          "package_name": "com.metalk.flutter_metalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14023959625-c58fgcee7dmc8ktt788tg2bi74uejarl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.metalk.flutter_metalk",
+            "certificate_hash": "c2483c3c8cf6c804e2fb3cbff4cf83060b4cbc9f"
+          }
+        },
+        {
+          "client_id": "14023959625-j78qf6nffsg0hif830jugrnt57nebpnh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.metalk.flutter_metalk",
+            "certificate_hash": "09d31424640505b55a5ec4add476f5ce12ffacfd"
+          }
+        },
+        {
+          "client_id": "14023959625-ullt571kmnmcsfjs3eiei61tahpgejv7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.metalk.flutter_metalk",
+            "certificate_hash": "6a43c05333b5dc0b318beb653d3a247e6246107e"
+          }
+        },
+        {
+          "client_id": "14023959625-ukeb0qk98397nbaepe05ot39s80lec7e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIPtrim9v6fDoRRrP1f10S8BMc0MEbzoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14023959625-h4pvlv1ekcaoqdal5c7q48m6bgi2td46.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "14023959625-vcv264bb9cib5fasiop7retitdd1f205.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.metalk.flutterMetalk"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
