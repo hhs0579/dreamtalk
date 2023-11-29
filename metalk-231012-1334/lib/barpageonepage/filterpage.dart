@@ -13,7 +13,8 @@ import 'package:flutter_svg/svg.dart';
 class FilterPage extends StatefulWidget {
   final FilterArgs filterArgs;
 
-  const FilterPage({super.key,
+  const FilterPage({
+    super.key,
     required this.filterArgs,
   });
 
@@ -87,9 +88,10 @@ class _FilterPageState extends State<FilterPage> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    for (AgeRangeVo item in filterArgs.ageRangeVoList)...[
+                    for (AgeRangeVo item in filterArgs.ageRangeVoList) ...[
                       ContainerWidget(
-                        onTap: () => setState(() => item.isChecked = !item.isChecked),
+                        onTap: () =>
+                            setState(() => item.isChecked = !item.isChecked),
                         isChecked: item.isChecked,
                         title: item.title,
                       ),
@@ -119,9 +121,10 @@ class _FilterPageState extends State<FilterPage> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    for (LanguageVo item in filterArgs.languageVoList)...[
+                    for (LanguageVo item in filterArgs.languageVoList) ...[
                       ContainerWidget(
-                        onTap: () => setState(() => item.isChecked = !item.isChecked),
+                        onTap: () =>
+                            setState(() => item.isChecked = !item.isChecked),
                         isChecked: item.isChecked,
                         image: item.iconUrl,
                         title: item.title,
@@ -152,11 +155,11 @@ class _FilterPageState extends State<FilterPage> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    for (InterestVo item in filterArgs.interestVoList)...[
+                    for (InterestVo item in filterArgs.interestVoList) ...[
                       ContainerWidget(
-                        onTap: () => setState(() => item.isChecked = !item.isChecked),
+                        onTap: () =>
+                            setState(() => item.isChecked = !item.isChecked),
                         isChecked: item.isChecked,
-                        image: item.iconUrl,
                         title: item.title,
                       ),
                     ],
@@ -185,9 +188,10 @@ class _FilterPageState extends State<FilterPage> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    for (JobVo item in filterArgs.jobVoList)...[
+                    for (JobVo item in filterArgs.jobVoList) ...[
                       ContainerWidget(
-                        onTap: () => setState(() => item.isChecked = !item.isChecked),
+                        onTap: () =>
+                            setState(() => item.isChecked = !item.isChecked),
                         isChecked: item.isChecked,
                         title: item.title,
                       ),
@@ -217,9 +221,10 @@ class _FilterPageState extends State<FilterPage> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    for (HobbyVo item in filterArgs.hobbyVoList)...[
+                    for (HobbyVo item in filterArgs.hobbyVoList) ...[
                       ContainerWidget(
-                        onTap: () => setState(() => item.isChecked = !item.isChecked),
+                        onTap: () =>
+                            setState(() => item.isChecked = !item.isChecked),
                         isChecked: item.isChecked,
                         title: item.title,
                       ),
@@ -249,9 +254,10 @@ class _FilterPageState extends State<FilterPage> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    for (CharacterVo item in filterArgs.characterVoList)...[
+                    for (CharacterVo item in filterArgs.characterVoList) ...[
                       ContainerWidget(
-                        onTap: () => setState(() => item.isChecked = !item.isChecked),
+                        onTap: () =>
+                            setState(() => item.isChecked = !item.isChecked),
                         isChecked: item.isChecked,
                         title: item.title,
                       ),

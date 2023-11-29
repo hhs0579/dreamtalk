@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_metalk/apis/user_api.dart';
+import 'package:flutter_metalk/colors/colors.dart';
 import 'package:flutter_metalk/components/loading.dart';
 import 'package:flutter_metalk/model/product.card.dart';
 import 'package:flutter_metalk/model/profile_create.dart';
@@ -32,7 +33,8 @@ class _PhoneProfileState extends State<PhoneProfile> {
 
   bool _manBox = false;
   bool _womanBox = false;
-
+  bool isNicknameLengthValid = false;
+  bool isNicknameCharactersValid = false;
   @override
   void initState() {
     super.initState();
@@ -50,7 +52,6 @@ class _PhoneProfileState extends State<PhoneProfile> {
 
     setState(() => _isLoading = false);
   }
-
 
   //남자박스
   void genderWoman() {
@@ -79,6 +80,20 @@ class _PhoneProfileState extends State<PhoneProfile> {
     }
   }
 
+  void validateNickname(String value) {
+    isNicknameLengthValid = value.length >= 2;
+  }
+
+  void validateNickname2(String value) {
+    // 한글 자음과 모음의 범위를 정의합니다.
+
+    // 정규 표현식을 사용하여 단일 자음 또는 모음, 불완전한 조합을 검사합니다.
+    RegExp regExp = RegExp(r'^[\uAC00-\uD7A3]+$');
+
+    // 입력된 값이 정규 표현식에 매칭되는지 검사합니다.
+    isNicknameCharactersValid = regExp.hasMatch(value);
+  }
+
   Future<void> profileauth() async {
     UserModel models = UserModel();
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -94,767 +109,490 @@ class _PhoneProfileState extends State<PhoneProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: _isLoading ? const Loading() : Padding(
-              padding: EdgeInsets.only(
-                top: ScreenUtil().setHeight(
-                  8,
-                ),
-                left: ScreenUtil().setWidth(
-                  20,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: ScreenUtil().setWidth(
-                      335,
-                    ),
-                    height: ScreenUtil().setHeight(
-                      4,
-                    ),
-                    child: const LinearProgressIndicator(
-                      value: 0.3,
-                      backgroundColor: Colors.grey,
-                      color: Colors.black45,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color.fromARGB(
-                          255,
-                          3,
-                          201,
-                          195,
-                        ),
-                      ),
-                      minHeight: 5.0,
-                      semanticsLabel: 'semanticsLabel',
-                      semanticsValue: 'semanticsValue',
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: ScreenUtil().setHeight(
-                        6,
-                      ),
-                      right: ScreenUtil().setWidth(
-                        20,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          '1/3',
-                          style: TextStyle(
-                            color: const Color.fromARGB(
-                              255,
-                              115,
-                              115,
-                              115,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: SafeArea(
+                  child: _isLoading
+                      ? const Loading()
+                      : Padding(
+                          padding: EdgeInsets.only(
+                            top: ScreenUtil().setHeight(
+                              8,
                             ),
-                            fontSize: ScreenUtil().setSp(
-                              12,
-                            ),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      24,
-                    ),
-                  ),
-                  Text(
-                    '프로필을 완성해주세요!',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: ScreenUtil().setSp(
-                        20,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      18,
-                    ),
-                  ),
-                  Text(
-                    '이름',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: ScreenUtil().setSp(
-                        14,
-                      ),
-                    ),
-                  ),
-
-                  //이메일주소
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      8,
-                    ),
-                  ),
-
-                  SizedBox(
-                    width: ScreenUtil().setWidth(
-                      335,
-                    ),
-                    height: ScreenUtil().setHeight(
-                      48,
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) => setState(() => {}),
-                      textInputAction: TextInputAction.next,
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color.fromARGB(
-                          255,
-                          250,
-                          250,
-                          250,
-                        ),
-                        //누를떄 컨테이너 모양
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
+                            left: ScreenUtil().setWidth(
+                              20,
                             ),
                           ),
-                        ),
-                        //누르기 전 컨테이너 모양
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                          ),
-                        ),
-                        hintText: '홍길동',
-                        hintStyle: TextStyle(
-                          fontSize: ScreenUtil().setSp(
-                            14,
-                          ),
-                          color: const Color.fromARGB(
-                            255,
-                            163,
-                            163,
-                            163,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      20,
-                    ),
-                  ),
-                  Text(
-                    '아이디',
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(
-                        14,
-                      ),
-                      fontWeight: FontWeight.bold,
-                      color: const Color.fromARGB(
-                        255,
-                        23,
-                        23,
-                        23,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      8,
-                    ),
-                  ),
-                  SizedBox(
-                    width: ScreenUtil().setWidth(
-                      335,
-                    ),
-                    height: ScreenUtil().setHeight(
-                      48,
-                    ),
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      controller: _idController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color.fromARGB(
-                          255,
-                          250,
-                          250,
-                          250,
-                        ),
-                        //누를떄 컨테이너 모양
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                          ),
-                        ),
-                        //누르기 전 컨테이너 모양
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                          ),
-                        ),
-                        hintText: '아이디 입력',
-                        hintStyle: TextStyle(
-                          fontSize: ScreenUtil().setSp(
-                            14,
-                          ),
-                          color: const Color.fromARGB(
-                            255,
-                            163,
-                            163,
-                            163,
-                          ),
-                        ),
-                      ),
-                      onChanged: ((value) {
-                        setState(
-                          () {
-                            // userId = value;
-                          },
-                        );
-                      }),
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      20,
-                    ),
-                  ),
-                  Text(
-                    '이메일',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: ScreenUtil().setSp(
-                        14,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      8,
-                    ),
-                  ),
-                  SizedBox(
-                    width: ScreenUtil().setWidth(
-                      335,
-                    ),
-                    height: ScreenUtil().setHeight(
-                      48,
-                    ),
-                    child: TextFormField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color.fromARGB(
-                          255,
-                          250,
-                          250,
-                          250,
-                        ),
-                        //누를떄 컨테이너 모양
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                          ),
-                        ),
-                        //누르기 전 컨테이너 모양
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                          ),
-                        ),
-                        hintText: 'abc@gmail.com',
-                        hintStyle: TextStyle(
-                          fontSize: ScreenUtil().setSp(
-                            14,
-                          ),
-                          color: const Color.fromARGB(
-                            255,
-                            163,
-                            163,
-                            163,
-                          ),
-                        ),
-                      ),
-                      onChanged: ((value) {
-                        setState(
-                          () {
-                            // userId = value;
-                          },
-                        );
-                      }),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: ScreenUtil().setHeight(
-                        20,
-                      ),
-                    ),
-                    child: const Text(
-                      '성별',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(
-                          255,
-                          23,
-                          23,
-                          23,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      8,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 0,
-                    ),
-                    child: Row(
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _manBox = !_manBox;
-                              genderman();
-                              print(_manBox);
-                            });
-                          },
-                          child: Container(
-                            height: ScreenUtil().setHeight(
-                              48,
-                            ),
-                            width: ScreenUtil().setWidth(
-                              162,
-                            ),
-                            decoration: BoxDecoration(
-                              border: _manBox
-                                  ? Border.all(
-                                      color: const Color.fromARGB(
-                                        255,
-                                        3,
-                                        201,
-                                        195,
-                                      ),
-                                    )
-                                  : Border.all(
-                                      color: const Color.fromARGB(
-                                        255,
-                                        229,
-                                        229,
-                                        229,
-                                      ),
-                                    ),
-                              borderRadius: BorderRadius.circular(8),
-                              color: _manBox
-                                  ? const Color.fromARGB(
-                                      255,
-                                      230,
-                                      250,
-                                      249,
-                                    )
-                                  : null,
-                            ),
-                            child: Center(
-                              child: Text(
-                                '남',
-                                style: TextStyle(
-                                  color: _manBox
-                                      ? const Color.fromARGB(
-                                          255,
-                                          3,
-                                          201,
-                                          195,
-                                        )
-                                      : const Color.fromARGB(
-                                          255,
-                                          82,
-                                          82,
-                                          82,
-                                        ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: const SizedBox(
+                                  height: 30,
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: ScreenUtil().setWidth(
-                            11,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _womanBox = !_womanBox;
-                              genderWoman();
-                              print(_womanBox);
-                            });
-                          },
-                          child: Container(
-                            height: ScreenUtil().setHeight(
-                              48,
-                            ),
-                            width: ScreenUtil().setWidth(
-                              162,
-                            ),
-                            decoration: BoxDecoration(
-                              border: _womanBox
-                                  ? Border.all(
-                                      color: const Color.fromARGB(
-                                        255,
-                                        3,
-                                        201,
-                                        195,
-                                      ),
-                                    )
-                                  : Border.all(
-                                      color: const Color.fromARGB(
-                                        255,
-                                        229,
-                                        229,
-                                        229,
-                                      ),
-                                    ),
-                              borderRadius: BorderRadius.circular(8),
-                              color: _womanBox
-                                  ? const Color.fromARGB(
-                                      255,
-                                      230,
-                                      250,
-                                      249,
-                                    )
-                                  : null,
-                            ),
-                            child: Center(
-                              child: Text(
-                                '여',
-                                style: TextStyle(
-                                  color: _womanBox
-                                      ? const Color.fromARGB(
-                                          255,
-                                          3,
-                                          201,
-                                          195,
-                                        )
-                                      : const Color.fromARGB(
-                                          255,
-                                          82,
-                                          82,
-                                          82,
-                                        ),
+                              SizedBox(
+                                width: ScreenUtil().setWidth(
+                                  335,
+                                ),
+                                height: ScreenUtil().setHeight(
+                                  8,
+                                ),
+                                child: LinearProgressIndicator(
+                                  value: 0.3,
+                                  backgroundColor: Colors.grey,
+                                  color: Colors.black45,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      ColorList.primary),
+                                  minHeight: 5.0,
+                                  semanticsLabel: 'semanticsLabel',
+                                  semanticsValue: 'semanticsValue',
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      20,
-                    ),
-                  ),
-                  const Text(
-                    '생년월일',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(
-                        255,
-                        23,
-                        23,
-                        23,
-                      ),
-                    ),
-                  ),
 
-                  //이메일주소
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      8,
-                    ),
-                  ),
-                  SizedBox(
-                    width: ScreenUtil().setWidth(
-                      335,
-                    ),
-                    height: ScreenUtil().setHeight(
-                      48,
-                    ),
-                    child: TextFormField(
-                      controller: _birthController,
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color.fromARGB(
-                          255,
-                          250,
-                          250,
-                          250,
-                        ),
-                        //누를떄 컨테이너 모양
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                          ),
-                        ),
-                        //누르기 전 컨테이너 모양
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                          ),
-                        ),
-                        hintText: '19921192',
-                        hintStyle: TextStyle(
-                          fontSize: ScreenUtil().setSp(
-                            14,
-                          ),
-                          color: const Color.fromARGB(
-                            255,
-                            163,
-                            163,
-                            163,
-                          ),
-                        ),
-                      ),
-                      onChanged: ((value) {
-                        setState(
-                          () {
-                            // userId = value;
-                          },
-                        );
-                      }),
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      20,
-                    ),
-                  ),
-                  const Text(
-                    '위치',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(
-                        255,
-                        23,
-                        23,
-                        23,
-                      ),
-                    ),
-                  ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(
+                                  24,
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '프로필',
+                                        style: TextStyle(
+                                          color: ColorList.primary,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: ScreenUtil().setSp(
+                                            20,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        '을',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: ScreenUtil().setSp(
+                                            20,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    '완성해주세요!',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: ScreenUtil().setSp(
+                                        20,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
 
-                  //이메일주소
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      8,
-                    ),
-                  ),
-                  SizedBox(
-                    width: ScreenUtil().setWidth(
-                      335,
-                    ),
-                    height: ScreenUtil().setHeight(
-                      48,
-                    ),
-                    child: TextFormField(
-                      controller: _locationController,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color.fromARGB(
-                          255,
-                          250,
-                          250,
-                          250,
-                        ),
-                        //누를떄 컨테이너 모양
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(
+                                  18,
+                                ),
+                              ),
+                              Text(
+                                '닉네임',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(
+                                    14,
+                                  ),
+                                ),
+                              ),
+
+                              //이메일주소
+                              SizedBox(
+                                height: ScreenUtil().setHeight(
+                                  8,
+                                ),
+                              ),
+
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    color: Colors.white,
+                                    width: ScreenUtil().setWidth(
+                                      335,
+                                    ),
+                                    child: TextFormField(
+                                      onChanged: (value) {
+                                        setState(() {
+                                          validateNickname(value);
+                                          validateNickname2(value);
+                                        });
+                                      },
+                                      textInputAction: TextInputAction.next,
+                                      controller: _nameController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        hintText: '닉네임을 입력해주세요',
+                                        hintStyle: TextStyle(
+                                          fontSize: ScreenUtil().setSp(
+                                            14,
+                                          ),
+                                          color: const Color.fromARGB(
+                                            255,
+                                            163,
+                                            163,
+                                            163,
+                                          ),
+                                        ),
+                                        suffixIcon:
+                                            _nameController.text.isNotEmpty
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        _nameController.clear();
+                                                      });
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.clear,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  )
+                                                : null,
+                                      ),
+                                    ),
+                                  ),
+
+                                  if (!isNicknameLengthValid)
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: const Text(
+                                        '2글자 이상 작성하세요.',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ),
+                                  // 길이 검사는 통과했지만, 문자 검사가 실패했을 때 메시지
+                                  if (isNicknameLengthValid &&
+                                      !isNicknameCharactersValid)
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: const Text(
+                                        '사용할 수 없는 별명이에요.',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ),
+                                  if (isNicknameLengthValid &&
+                                      isNicknameCharactersValid)
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: const Text(
+                                        '좋은 이름이군요. 사용 가능해요',
+                                        style: TextStyle(color: Colors.blue),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(
+                                  20,
+                                ),
+                              ),
+                              const Text(
+                                '생년월일',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(
+                                    255,
+                                    23,
+                                    23,
+                                    23,
+                                  ),
+                                ),
+                              ),
+
+                              //이메일주소
+                              SizedBox(
+                                height: ScreenUtil().setHeight(
+                                  8,
+                                ),
+                              ),
+                              SizedBox(
+                                width: ScreenUtil().setWidth(
+                                  335,
+                                ),
+                                height: ScreenUtil().setHeight(
+                                  48,
+                                ),
+                                child: TextFormField(
+                                  controller: _birthController,
+                                  keyboardType: TextInputType.number,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    //누를떄 컨테이너 모양
+
+                                    hintText: 'ex) 19921192',
+                                    hintStyle: TextStyle(
+                                      fontSize: ScreenUtil().setSp(
+                                        14,
+                                      ),
+                                      color: const Color.fromARGB(
+                                        255,
+                                        163,
+                                        163,
+                                        163,
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: ((value) {
+                                    setState(
+                                      () {
+                                        // userId = value;
+                                      },
+                                    );
+                                  }),
+                                ),
+                              ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(
+                                  20,
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 0,
+                                ),
+                                child: Row(
+                                  // crossAxisAlignment: CrossAxisAlignment.center,
+
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _manBox = !_manBox;
+                                          genderman();
+                                          print(_manBox);
+                                        });
+                                      },
+                                      child: Container(
+                                        height: ScreenUtil().setHeight(
+                                          48,
+                                        ),
+                                        width: ScreenUtil().setWidth(
+                                          162,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: _manBox
+                                              ? Border.all(
+                                                  color:
+                                                      const Color(0xff6C5FBC))
+                                              : Border.all(
+                                                  color: const Color.fromARGB(
+                                                    255,
+                                                    229,
+                                                    229,
+                                                    229,
+                                                  ),
+                                                ),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: _manBox
+                                              ? ColorList.primary
+                                              : null,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            '남',
+                                            style: TextStyle(
+                                              color: _manBox
+                                                  ? Colors.white
+                                                  : const Color.fromARGB(
+                                                      255,
+                                                      82,
+                                                      82,
+                                                      82,
+                                                    ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: ScreenUtil().setWidth(
+                                        11,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _womanBox = !_womanBox;
+                                          genderWoman();
+                                          print(_womanBox);
+                                        });
+                                      },
+                                      child: Container(
+                                        height: ScreenUtil().setHeight(
+                                          48,
+                                        ),
+                                        width: ScreenUtil().setWidth(
+                                          162,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: _womanBox
+                                              ? Border.all(
+                                                  color:
+                                                      const Color(0xff6C5FBC))
+                                              : Border.all(
+                                                  color: const Color.fromARGB(
+                                                    255,
+                                                    229,
+                                                    229,
+                                                    229,
+                                                  ),
+                                                ),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: _womanBox
+                                              ? ColorList.primary
+                                              : null,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            '여',
+                                            style: TextStyle(
+                                              color: _womanBox
+                                                  ? Colors.white
+                                                  : const Color.fromARGB(
+                                                      255,
+                                                      82,
+                                                      82,
+                                                      82,
+                                                    ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              SizedBox(
+                                height: ScreenUtil().setHeight(
+                                  20,
+                                ),
+                              ),
+                              const Text(
+                                '위치',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(
+                                    255,
+                                    23,
+                                    23,
+                                    23,
+                                  ),
+                                ),
+                              ),
+
+                              //이메일주소
+                              Container(
+                                color: Colors.white,
+                                height: ScreenUtil().setHeight(
+                                  8,
+                                ),
+                              ),
+                              SizedBox(
+                                width: ScreenUtil().setWidth(
+                                  335,
+                                ),
+                                height: ScreenUtil().setHeight(
+                                  48,
+                                ),
+                                child: TextFormField(
+                                  controller: _locationController,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    //누를떄 컨테이너 모양
+
+                                    hintText: '서울시 강남구',
+                                    hintStyle: TextStyle(
+                                      fontSize: ScreenUtil().setSp(
+                                        14,
+                                      ),
+                                      color: const Color.fromARGB(
+                                        255,
+                                        163,
+                                        163,
+                                        163,
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: ((value) {
+                                    setState(
+                                      () {
+                                        // userId = value;
+                                      },
+                                    );
+                                  }),
+                                ),
+                              ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(
+                                  40,
+                                ),
+                              ),
+                            ],
                           ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                          ),
                         ),
-                        //누르기 전 컨테이너 모양
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                          ),
-                        ),
-                        hintText: '서울시 강남구',
-                        hintStyle: TextStyle(
-                          fontSize: ScreenUtil().setSp(
-                            14,
-                          ),
-                          color: const Color.fromARGB(
-                            255,
-                            163,
-                            163,
-                            163,
-                          ),
-                        ),
-                      ),
-                      onChanged: ((value) {
-                        setState(
-                          () {
-                            // userId = value;
-                          },
-                        );
-                      }),
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      40,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => _onSubmit(),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                          16,
-                        ),
-                        color: const Color.fromARGB(
-                          255,
-                          3,
-                          201,
-                          195,
-                        ),
-                      ),
-                      width: ScreenUtil().setWidth(
-                        335,
-                      ),
-                      height: ScreenUtil().setHeight(
-                        56,
-                      ),
-                      child: Center(
-                        child: Text(
-                          '다음',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: ScreenUtil().setSp(
-                              16,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(
-                      350,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
+            GestureDetector(
+              onTap: () => _onSubmit(),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 70,
+                decoration: BoxDecoration(
+                  color: (isNicknameLengthValid &&
+                          isNicknameCharactersValid &&
+                          (_manBox || _womanBox))
+                      ? ColorList.primary
+                      : const Color(0xffE6E6F6),
+                ),
+                child: const Center(
+                  child: Text(
+                    '다음',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17.0,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -863,17 +601,20 @@ class _PhoneProfileState extends State<PhoneProfile> {
   void _onSubmit() {
     String name = _nameController.text;
     if (Utils.isValidate(name: '이름', value: name) == false) return;
-    String id = _idController.text;
-    if (Utils.isValidate(name: '아이디', value: id) == false) return;
-    String email = _emailController.text;
-    if (Utils.isValidate(name: '이메일', value: email, isCheckEmail: true) == false) return;
-    String? gender = _manBox ? 'male' : _womanBox ? 'female' : null;
+
+    String? gender = _manBox
+        ? 'male'
+        : _womanBox
+            ? 'female'
+            : null;
     if (gender == null) {
       Fluttertoast.showToast(msg: '성별을 선택해주세요.');
       return;
     }
     String birth = _birthController.text;
-    if (Utils.isValidate(name: '생년월일', value: birth, isCheckNum: true, length: 8) == false) return;
+    if (Utils.isValidate(
+            name: '생년월일', value: birth, isCheckNum: true, length: 8) ==
+        false) return;
     birth = Utils.getExistDateByProfileBirth(birth);
     String location = _locationController.text;
     if (Utils.isValidate(name: '위치', value: location) == false) return;
@@ -883,15 +624,14 @@ class _PhoneProfileState extends State<PhoneProfile> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) =>
-        PhoneProfileTwo(profileCreate: ProfileCreate(
-          name: name,
-          id: id,
-          email: email,
-          gender: gender,
-          birth: birth,
-          location: location,
-        ),),
+        builder: (BuildContext context) => PhoneProfileTwo(
+          profileCreate: ProfileCreate(
+            name: name,
+            gender: gender,
+            birth: birth,
+            location: location,
+          ),
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_metalk/colors/colors.dart';
 import 'package:flutter_metalk/components/image_padding.dart';
 
 class ContainerWidget extends StatelessWidget {
@@ -7,7 +8,8 @@ class ContainerWidget extends StatelessWidget {
   final VoidCallback onTap;
   final bool isChecked;
 
-  const ContainerWidget({super.key,
+  const ContainerWidget({
+    super.key,
     required this.title,
     this.image,
     required this.onTap,
@@ -23,17 +25,26 @@ class ContainerWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             100,
           ),
-          color: isChecked ? const Color.fromARGB(255, 230, 250, 249,) : const Color.fromARGB(255, 250, 250, 250,),
+          color: isChecked
+              ? ColorList.primary
+              : const Color.fromARGB(
+                  255,
+                  250,
+                  250,
+                  250,
+                ),
           border: Border.all(
-            color: isChecked ? const Color.fromARGB(255, 3, 201, 195) : const Color.fromARGB(255, 245, 245, 245),
+            color: isChecked
+                ? const Color(0xff6C5FBC)
+                : const Color.fromARGB(255, 245, 245, 245),
           ),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (image != null)...[
+            if (image != null) ...[
               ImagePadding(
                 image!,
                 width: 16,
@@ -47,8 +58,8 @@ class ContainerWidget extends StatelessWidget {
             ],
             Text(
               title,
-              style: const TextStyle(
-                color: Colors.black,
+              style: TextStyle(
+                color: isChecked ? Colors.white : Colors.black,
               ),
             ),
           ],

@@ -63,7 +63,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   List<CharacterVo> _characterVoList = [];
 
   // step 3
-  final List<ImageChangeVo> _images = List.generate(5, (index) => ImageChangeVo());
+  final List<ImageChangeVo> _images =
+      List.generate(5, (index) => ImageChangeVo());
   final TextEditingController _descriptionController = TextEditingController();
   bool _isProcessingRecording = false;
   AnotherAudioRecorder? _recorder;
@@ -89,7 +90,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
     List<String>? imageUrlList = _userVo.imageUrlList;
     if (imageUrlList != null) {
       for (int index = 0; index < _images.length; index++) {
-        _images[index].originImgUrl = imageUrlList.length > index ? imageUrlList[index] : null;
+        _images[index].originImgUrl =
+            imageUrlList.length > index ? imageUrlList[index] : null;
       }
     }
 
@@ -129,7 +131,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
       return e;
     }).toList();
 
-    _recordeFilePath = '${(await getApplicationDocumentsDirectory()).path}/audio_message.m4a';
+    _recordeFilePath =
+        '${(await getApplicationDocumentsDirectory()).path}/audio_message.m4a';
     _descriptionController.text = _userVo.description ?? '';
 
     setState(() => _isLoading = false);
@@ -181,15 +184,18 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           debugPrint('delete file path: $_recordeFilePath');
           file.deleteSync();
         }
-        _recorder = AnotherAudioRecorder(_recordeFilePath, audioFormat: AudioFormat.AAC);
+        _recorder = AnotherAudioRecorder(_recordeFilePath,
+            audioFormat: AudioFormat.AAC);
         await _recorder?.initialized;
         await _recorder!.start();
         _refreshRecordingDuration();
-        _recorderTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) => _refreshRecordingDuration());
+        _recorderTimer = Timer.periodic(const Duration(milliseconds: 100),
+            (timer) => _refreshRecordingDuration());
         setState(() => _audioStateExt = AudioStateExt.recording);
       } catch (e) {
         debugPrint(e.toString());
-        Fluttertoast.showToast(msg: '음성 메세지 초기화 중 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.');
+        Fluttertoast.showToast(
+            msg: '음성 메세지 초기화 중 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.');
       }
     }
 
@@ -263,36 +269,43 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
     // step 1
     String name = _nameController.text;
     if (Utils.isValidate(name: '이름', value: name) == false) return;
-    String id = _idController.text;
-    if (Utils.isValidate(name: '아이디', value: id) == false) return;
-    String email = _emailController.text;
-    if (Utils.isValidate(name: '이메일', value: email, isCheckEmail: true) == false) return;
-    String? gender = _manbox ? 'male' : _womanbox ? 'female' : null;
+
+    String? gender = _manbox
+        ? 'male'
+        : _womanbox
+            ? 'female'
+            : null;
     if (gender == null) {
       Fluttertoast.showToast(msg: '성별을 선택해주세요.');
       return;
     }
     String birth = _birthController.text;
-    if (Utils.isValidate(name: '생년월일', value: birth, isCheckNum: true, length: 8) == false) return;
+    if (Utils.isValidate(
+            name: '생년월일', value: birth, isCheckNum: true, length: 8) ==
+        false) return;
     birth = Utils.getExistDateByProfileBirth(birth);
     String location = _locationController.text;
     if (Utils.isValidate(name: '위치', value: location) == false) return;
     ProfileCreate profileCreate = ProfileCreate(
       name: name,
-      id: id,
-      email: email,
       gender: gender,
       birth: birth,
       location: location,
     );
 
     // step 2
-    List<InterestVo> interestVoList = _interestVoList.where((element) => element.isChecked).toList();
-    List<LanguageVo> languageVoList = _languageVoList.where((element) => element.isChecked).toList();
-    List<IdealVo> idealVoList = _idealVoList.where((element) => element.isChecked).toList();
-    List<JobVo> jobVoList = _jobVoList.where((element) => element.isChecked).toList();
-    List<HobbyVo> hobbyVoList = _hobbyVoList.where((element) => element.isChecked).toList();
-    List<CharacterVo> characterVoList = _characterVoList.where((element) => element.isChecked).toList();
+    List<InterestVo> interestVoList =
+        _interestVoList.where((element) => element.isChecked).toList();
+    List<LanguageVo> languageVoList =
+        _languageVoList.where((element) => element.isChecked).toList();
+    List<IdealVo> idealVoList =
+        _idealVoList.where((element) => element.isChecked).toList();
+    List<JobVo> jobVoList =
+        _jobVoList.where((element) => element.isChecked).toList();
+    List<HobbyVo> hobbyVoList =
+        _hobbyVoList.where((element) => element.isChecked).toList();
+    List<CharacterVo> characterVoList =
+        _characterVoList.where((element) => element.isChecked).toList();
     if (interestVoList.isEmpty) {
       Fluttertoast.showToast(msg: '관심사를 최소 1개 이상 선택해주세요.');
       return;
@@ -324,7 +337,10 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
     profileCreate.hobbyVoList = hobbyVoList;
     profileCreate.characterVoList = characterVoList;
 
-    List<ImageChangeVo> images = _images.where((element) => element.changeFile != null || element.originImgUrl != null).toList();
+    List<ImageChangeVo> images = _images
+        .where((element) =>
+            element.changeFile != null || element.originImgUrl != null)
+        .toList();
     String description = _descriptionController.text;
     if (images.isEmpty) {
       Fluttertoast.showToast(msg: '메인사진은 반드시 올려주세요.');
@@ -341,10 +357,12 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
     List<String> imageUrlList = [];
     for (ImageChangeVo image in images) {
       if (image.changeFile != null) {
-        String? downloadURL = await FirebaseStorageApi.uploadFile(File(image.changeFile!.path), FirebaseStorageApi.uploadPathProfile);
+        String? downloadURL = await FirebaseStorageApi.uploadFile(
+            File(image.changeFile!.path), FirebaseStorageApi.uploadPathProfile);
         if (downloadURL == null) {
           setState(() => _isProcessingSubmit = false);
-          Fluttertoast.showToast(msg: '이미지 업로드 중 오류가 발생하였습니다.\n다른 이미지 파일을 사용하시거나 잠시 후 다시 시도해주세요.');
+          Fluttertoast.showToast(
+              msg: '이미지 업로드 중 오류가 발생하였습니다.\n다른 이미지 파일을 사용하시거나 잠시 후 다시 시도해주세요.');
           return;
         }
         imageUrlList.add(downloadURL);
@@ -355,10 +373,12 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
 
     String? voiceMessageUrl;
     if (_recordeFile != null) {
-      String? downloadURL = await FirebaseStorageApi.uploadFile(File(_recordeFile!.path), FirebaseStorageApi.uploadPathProfile);
+      String? downloadURL = await FirebaseStorageApi.uploadFile(
+          File(_recordeFile!.path), FirebaseStorageApi.uploadPathProfile);
       if (downloadURL == null) {
         setState(() => _isProcessingSubmit = false);
-        Fluttertoast.showToast(msg: '오디오 업로드 중 오류가 발생하였습니다.\n다른 오디오 파일을 사용하시거나 잠시 후 다시 시도해주세요.');
+        Fluttertoast.showToast(
+            msg: '오디오 업로드 중 오류가 발생하였습니다.\n다른 오디오 파일을 사용하시거나 잠시 후 다시 시도해주세요.');
         return;
       }
       voiceMessageUrl = downloadURL;
@@ -368,7 +388,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
     profileCreate.description = description;
     profileCreate.voiceMessageUrl = voiceMessageUrl ?? _userVo.voiceMessageUrl;
 
-    UserVo? userVo = await UserApi.updateUserCreateProfile(user: _userVo, profileCreate: profileCreate);
+    UserVo? userVo = await UserApi.updateUserCreateProfile(
+        user: _userVo, profileCreate: profileCreate);
     if (userVo != null) {
       Fluttertoast.showToast(msg: '저장되었습니다.');
       Future.delayed(Duration.zero, () => Navigator.pop(context, true));
@@ -380,14 +401,16 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   Future<void> _playRecordeFile() async {
     File? recordeFile = _recordeFile;
     if (recordeFile == null || recordeFile.existsSync() == false) {
-      Fluttertoast.showToast(msg: '저장된 음성 메세지 파일을 찾을 수 없습니다.\n재녹음 후 다시 시도해주세요.');
+      Fluttertoast.showToast(
+          msg: '저장된 음성 메세지 파일을 찾을 수 없습니다.\n재녹음 후 다시 시도해주세요.');
       return;
     }
     try {
       if (_audioPlayer == null) {
         _audioPlayer = AudioPlayer();
         _audioPlayer!.playerStateStream.listen((event) {
-          if (event.playing && event.processingState == ProcessingState.completed) {
+          if (event.playing &&
+              event.processingState == ProcessingState.completed) {
             debugPrint('complete audio');
             setState(() => _audioStateExt = AudioStateExt.stop);
           }
@@ -411,15 +434,17 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
     required List list,
   }) {
     bool result = list.where((element) => element.isChecked).length < maxLength;
-    if (result == false) Fluttertoast.showToast(msg: '$maxLength개 이상 선택할 수 없습니다.');
+    if (result == false) {
+      Fluttertoast.showToast(msg: '$maxLength개 이상 선택할 수 없습니다.');
+    }
     return result;
   }
 
   bool _manbox = false;
   bool _womanbox = false;
 
-  String _man = '남';
-  String _woman = '여';
+  final String _man = '남';
+  final String _woman = '여';
   //남자박스
   void genderWoman() {
     // gender = _woman;
@@ -471,7 +496,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           ),
         ),
         actions: [
-          if (_isLoading == false && _userVo.userGender == GenderExt.female)...[
+          if (_isLoading == false &&
+              _userVo.userGender == GenderExt.female) ...[
             Padding(
               padding: EdgeInsets.only(
                 right: ScreenUtil().setWidth(
@@ -487,8 +513,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                         MaterialPageRoute(
                           builder: (BuildContext context) =>
                               const CoinSettingPage(
-                                isFirstMsgCoin: true,
-                              ),
+                            isFirstMsgCoin: true,
+                          ),
                         ),
                       );
                     },
@@ -539,198 +565,286 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         ],
       ),
       body: SafeArea(
-        child: _isLoading ? const Loading() : Stack(
-          children: [
-            Positioned.fill(child:             Column(
-              children: [
-                Expanded(child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: ScreenUtil().setHeight(8),
-                      left: ScreenUtil().setWidth(
-                        20,
-                      ),
-                      right: ScreenUtil().setWidth(
-                        20,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              for (int index = 0; index < _images.length; index++)...[
-                                Row(
-                                  children: [
-                                    if (index > 0)...[
-                                      SizedBox(width: ScreenUtil().setWidth(8,),),
-                                    ],
-                                    Container(
-                                      height: ScreenUtil().setHeight(134,),
-                                      width: ScreenUtil().setWidth(100,),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: index == 0 ? const Color.fromARGB(255, 243, 252, 252,) : const Color.fromARGB(255, 245, 245, 245,),
-                                        border: index == 0 ? Border.all(
-                                          color: const Color.fromARGB(255, 3, 201, 195,),
-                                        ) : null,
-                                      ),
-                                      clipBehavior: Clip.antiAlias,
-                                      child: TextButton(
-                                        onPressed: () => _onPressedUploadImage(index),
-                                        style: CustomStyles.textButtonZeroSize(),
-                                        child: Stack(
-                                          children: [
-                                            if (_images[index].changeFile != null)...[
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                    image: FileImage(_images[index].changeFile!),
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
-                                            ]else if (_images[index].originImgUrl != null)...[
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(_images[index].originImgUrl!),
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
-                                            ]else...[
-                                              Center(
-                                                child: Icon(
-                                                  Icons.camera_alt_rounded,
-                                                  color: index == 0 ? const Color.fromARGB(255, 177, 238, 236,) : const Color.fromARGB(255, 212, 212, 212,),
-                                                ),
-                                              ),
-                                            ],
-                                            if (index == 0)...[
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                  left: ScreenUtil().setWidth(22,),
-                                                ),
-                                                child: Container(
-                                                  decoration: const BoxDecoration(
-                                                    borderRadius: BorderRadius.only(
-                                                      bottomLeft: Radius.circular(5),
-                                                      bottomRight: Radius.circular(5),
-                                                    ),
-                                                    color: Color.fromARGB(255, 3, 201, 195,),
-                                                  ),
-                                                  width: ScreenUtil().setWidth(58,),
-                                                  height: ScreenUtil().setHeight(20,),
-                                                  child: Center(
-                                                    child: Text(
-                                                      '메인사진',
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: ScreenUtil().setSp(
-                                                          12,
-                                                        ),
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ],
+        child: _isLoading
+            ? const Loading()
+            : Stack(
+                children: [
+                  Positioned.fill(
+                      child: Column(
+                    children: [
+                      Expanded(
+                          child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: ScreenUtil().setHeight(8),
+                            left: ScreenUtil().setWidth(
+                              20,
+                            ),
+                            right: ScreenUtil().setWidth(
+                              20,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(
-                            14,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ..._widgetStep1(),
-                              const CustomBorder(),
-                              ..._widgetStep2(),
-                              const CustomBorder(),
-                              ..._widgetStep3(),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (int index = 0;
+                                        index < _images.length;
+                                        index++) ...[
+                                      Row(
+                                        children: [
+                                          if (index > 0) ...[
+                                            SizedBox(
+                                              width: ScreenUtil().setWidth(
+                                                8,
+                                              ),
+                                            ),
+                                          ],
+                                          Container(
+                                            height: ScreenUtil().setHeight(
+                                              134,
+                                            ),
+                                            width: ScreenUtil().setWidth(
+                                              100,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: index == 0
+                                                  ? const Color.fromARGB(
+                                                      255,
+                                                      243,
+                                                      252,
+                                                      252,
+                                                    )
+                                                  : const Color.fromARGB(
+                                                      255,
+                                                      245,
+                                                      245,
+                                                      245,
+                                                    ),
+                                              border: index == 0
+                                                  ? Border.all(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                        255,
+                                                        3,
+                                                        201,
+                                                        195,
+                                                      ),
+                                                    )
+                                                  : null,
+                                            ),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: TextButton(
+                                              onPressed: () =>
+                                                  _onPressedUploadImage(index),
+                                              style: CustomStyles
+                                                  .textButtonZeroSize(),
+                                              child: Stack(
+                                                children: [
+                                                  if (_images[index]
+                                                          .changeFile !=
+                                                      null) ...[
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: FileImage(
+                                                              _images[index]
+                                                                  .changeFile!),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ] else if (_images[index]
+                                                          .originImgUrl !=
+                                                      null) ...[
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              _images[index]
+                                                                  .originImgUrl!),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ] else ...[
+                                                    Center(
+                                                      child: Icon(
+                                                        Icons
+                                                            .camera_alt_rounded,
+                                                        color: index == 0
+                                                            ? const Color
+                                                                .fromARGB(
+                                                                255,
+                                                                177,
+                                                                238,
+                                                                236,
+                                                              )
+                                                            : const Color
+                                                                .fromARGB(
+                                                                255,
+                                                                212,
+                                                                212,
+                                                                212,
+                                                              ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  if (index == 0) ...[
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                        left: ScreenUtil()
+                                                            .setWidth(
+                                                          22,
+                                                        ),
+                                                      ),
+                                                      child: Container(
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    5),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    5),
+                                                          ),
+                                                          color: Color.fromARGB(
+                                                            255,
+                                                            3,
+                                                            201,
+                                                            195,
+                                                          ),
+                                                        ),
+                                                        width: ScreenUtil()
+                                                            .setWidth(
+                                                          58,
+                                                        ),
+                                                        height: ScreenUtil()
+                                                            .setHeight(
+                                                          20,
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '메인사진',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                12,
+                                                              ),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              ),
                               SizedBox(
                                 height: ScreenUtil().setHeight(
-                                  40,
+                                  14,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ..._widgetStep1(),
+                                    const CustomBorder(),
+                                    ..._widgetStep2(),
+                                    const CustomBorder(),
+                                    ..._widgetStep3(),
+                                    SizedBox(
+                                      height: ScreenUtil().setHeight(
+                                        40,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                )),
-                SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: GestureDetector(
-                      onTap: () => _onSubmit(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            16,
-                          ),
-                          color: const Color.fromARGB(
-                            255,
-                            3,
-                            201,
-                            195,
-                          ),
-                        ),
-                        width: ScreenUtil().setWidth(
-                          335,
-                        ),
-                        height: ScreenUtil().setHeight(
-                          56,
-                        ),
-                        child: Center(
-                          child: Text(
-                            '저장하기',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(
-                                16,
+                      )),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: GestureDetector(
+                            onTap: () => _onSubmit(),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  16,
+                                ),
+                                color: const Color.fromARGB(
+                                  255,
+                                  3,
+                                  201,
+                                  195,
+                                ),
+                              ),
+                              width: ScreenUtil().setWidth(
+                                335,
+                              ),
+                              height: ScreenUtil().setHeight(
+                                56,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '저장하기',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(
+                                      16,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-              ],
-            )),
-            if (_isProcessingSubmit)...[
-              Positioned.fill(child: Container(
-                color: Colors.black.withOpacity(.3),
-                child: const Center(
-                  child: Loading(
-                    color: Colors.white,
-                  ),
-                ),
-              )),
-            ],
-          ],
-        ),
+                    ],
+                  )),
+                  if (_isProcessingSubmit) ...[
+                    Positioned.fill(
+                        child: Container(
+                      color: Colors.black.withOpacity(.3),
+                      child: const Center(
+                        child: Loading(
+                          color: Colors.white,
+                        ),
+                      ),
+                    )),
+                  ],
+                ],
+              ),
       ),
     );
   }
@@ -763,17 +877,20 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         spacing: 8,
         runSpacing: 8,
         children: [
-          for (InterestVo item in _interestVoList)...[
+          for (InterestVo item in _interestVoList) ...[
             ContainerWidget(
-              onTap: () {if (item.isChecked == true || _isAbleMoreCheck(maxLength: 5, list: _interestVoList)) setState(() => item.isChecked = !item.isChecked);},
+              onTap: () {
+                if (item.isChecked == true ||
+                    _isAbleMoreCheck(maxLength: 5, list: _interestVoList)) {
+                  setState(() => item.isChecked = !item.isChecked);
+                }
+              },
               isChecked: item.isChecked,
-              image: item.iconUrl,
               title: item.title,
             ),
           ],
         ],
       ),
-
       SizedBox(
         height: ScreenUtil().setHeight(
           24,
@@ -809,9 +926,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         spacing: 8,
         runSpacing: 8,
         children: [
-          for (LanguageVo item in _languageVoList)...[
+          for (LanguageVo item in _languageVoList) ...[
             ContainerWidget(
-              onTap: () {if (item.isChecked == true || _isAbleMoreCheck(maxLength: 5, list: _languageVoList)) setState(() => item.isChecked = !item.isChecked);},
+              onTap: () {
+                if (item.isChecked == true ||
+                    _isAbleMoreCheck(maxLength: 5, list: _languageVoList)) {
+                  setState(() => item.isChecked = !item.isChecked);
+                }
+              },
               isChecked: item.isChecked,
               image: item.iconUrl,
               title: item.title,
@@ -855,9 +977,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         spacing: 8,
         runSpacing: 8,
         children: [
-          for (IdealVo item in _idealVoList)...[
+          for (IdealVo item in _idealVoList) ...[
             ContainerWidget(
-              onTap: () {if (item.isChecked == true || _isAbleMoreCheck(maxLength: 5, list: _idealVoList)) setState(() => item.isChecked = !item.isChecked);},
+              onTap: () {
+                if (item.isChecked == true ||
+                    _isAbleMoreCheck(maxLength: 5, list: _idealVoList)) {
+                  setState(() => item.isChecked = !item.isChecked);
+                }
+              },
               isChecked: item.isChecked,
               title: item.title,
             ),
@@ -901,9 +1028,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         spacing: 8,
         runSpacing: 8,
         children: [
-          for (JobVo item in _jobVoList)...[
+          for (JobVo item in _jobVoList) ...[
             ContainerWidget(
-              onTap: () {if (item.isChecked == true || _isAbleMoreCheck(maxLength: 1, list: _jobVoList)) setState(() => item.isChecked = !item.isChecked);},
+              onTap: () {
+                if (item.isChecked == true ||
+                    _isAbleMoreCheck(maxLength: 1, list: _jobVoList)) {
+                  setState(() => item.isChecked = !item.isChecked);
+                }
+              },
               isChecked: item.isChecked,
               title: item.title,
             ),
@@ -945,9 +1077,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         spacing: 8,
         runSpacing: 8,
         children: [
-          for (HobbyVo item in _hobbyVoList)...[
+          for (HobbyVo item in _hobbyVoList) ...[
             ContainerWidget(
-              onTap: () {if (item.isChecked == true || _isAbleMoreCheck(maxLength: 5, list: _hobbyVoList)) setState(() => item.isChecked = !item.isChecked);},
+              onTap: () {
+                if (item.isChecked == true ||
+                    _isAbleMoreCheck(maxLength: 5, list: _hobbyVoList)) {
+                  setState(() => item.isChecked = !item.isChecked);
+                }
+              },
               isChecked: item.isChecked,
               title: item.title,
             ),
@@ -991,9 +1128,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         spacing: 8,
         runSpacing: 8,
         children: [
-          for (CharacterVo item in _characterVoList)...[
+          for (CharacterVo item in _characterVoList) ...[
             ContainerWidget(
-              onTap: () {if (item.isChecked == true || _isAbleMoreCheck(maxLength: 3, list: _characterVoList)) setState(() => item.isChecked = !item.isChecked);},
+              onTap: () {
+                if (item.isChecked == true ||
+                    _isAbleMoreCheck(maxLength: 3, list: _characterVoList)) {
+                  setState(() => item.isChecked = !item.isChecked);
+                }
+              },
               isChecked: item.isChecked,
               title: item.title,
             ),
@@ -1083,8 +1225,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
       ),
       SizedBox(
           height: ScreenUtil().setHeight(
-            20,
-          )),
+        20,
+      )),
       Text(
         '아이디',
         style: TextStyle(
@@ -1167,7 +1309,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           ),
           onChanged: ((value) {
             setState(
-                  () {
+              () {
                 // userId = value;
               },
             );
@@ -1176,8 +1318,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
       ),
       SizedBox(
           height: ScreenUtil().setHeight(
-            20,
-          )),
+        20,
+      )),
       Text(
         '이메일',
         style: TextStyle(
@@ -1255,7 +1397,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           ),
           onChanged: ((value) {
             setState(
-                  () {
+              () {
                 // userId = value;
               },
             );
@@ -1264,8 +1406,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
       ),
       SizedBox(
           height: ScreenUtil().setHeight(
-            20,
-          )),
+        20,
+      )),
       // const Padding(
       //   padding: EdgeInsets.only(),
       //   child: Text(
@@ -1499,7 +1641,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           ),
           onChanged: ((value) {
             setState(
-                  () {
+              () {
                 // userId = value;
               },
             );
@@ -1591,7 +1733,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           ),
           onChanged: ((value) {
             setState(
-                  () {
+              () {
                 // userId = value;
               },
             );
@@ -1632,7 +1774,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           keyboardType: TextInputType.multiline,
           decoration: const InputDecoration(
             contentPadding:
-            EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
             //누를떄 컨테이너 모양
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(
@@ -1851,12 +1993,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: _recordeFile != null ? const Color(0xffE5E5E5) : const Color.fromARGB(
-                        225,
-                        229,
-                        229,
-                        229,
-                      ),
+                      color: _recordeFile != null
+                          ? const Color(0xffE5E5E5)
+                          : const Color.fromARGB(
+                              225,
+                              229,
+                              229,
+                              229,
+                            ),
                     ),
                     color: const Color.fromARGB(
                       255,
@@ -1878,12 +2022,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                     child: Text(
                       '다시 녹음하기',
                       style: TextStyle(
-                        color: _recordeFile != null ? const Color(0xff404040) : const Color.fromARGB(
-                          255,
-                          212,
-                          212,
-                          212,
-                        ),
+                        color: _recordeFile != null
+                            ? const Color(0xff404040)
+                            : const Color.fromARGB(
+                                255,
+                                212,
+                                212,
+                                212,
+                              ),
                         fontSize: ScreenUtil().setSp(
                           12,
                         ),
@@ -1917,12 +2063,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: _recordeFile != null ? const Color(0xff03C9C3) : const Color.fromARGB(
-                      255,
-                      217,
-                      247,
-                      246,
-                    ),
+                    color: _recordeFile != null
+                        ? const Color(0xff03C9C3)
+                        : const Color.fromARGB(
+                            255,
+                            217,
+                            247,
+                            246,
+                          ),
                     borderRadius: BorderRadius.circular(
                       100,
                     ),

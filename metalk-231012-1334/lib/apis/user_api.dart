@@ -19,13 +19,15 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 class UserApi {
-  static final CollectionReference _usersRef = FirebaseFirestore.instance.collection('users');
+  static final CollectionReference _usersRef =
+      FirebaseFirestore.instance.collection('users');
 
   static Future<UserVo?> getUser({
     bool isRequiredUserCoins = true,
     bool isRequiredUserDiamonds = true,
   }) async {
-    DocumentSnapshot documentSnapshot = await _usersRef.doc(FirebaseAuth.instance.currentUser?.uid).get();
+    DocumentSnapshot documentSnapshot =
+        await _usersRef.doc(FirebaseAuth.instance.currentUser?.uid).get();
     if (documentSnapshot.exists) {
       UserVo userVo = UserVo.fromQueryDocumentSnapshot(documentSnapshot);
 
@@ -42,7 +44,8 @@ class UserApi {
     }
   }
 
-  static Future<UserVo?> getUserById(String id, {
+  static Future<UserVo?> getUserById(
+    String id, {
     bool isIncludeCoins = true,
     bool isIncludeDiamonds = true,
     UserVo? myUserVo,
@@ -58,9 +61,15 @@ class UserApi {
         userVo.userDiamonds = await UserDiamondApi.getUserDiamonds(userVo.id);
       }
       if (myUserVo != null) {
-        if (userVo.latitude != null && userVo.longitude != null
-            && myUserVo.latitude != null && myUserVo.longitude != null) {
-          userVo.distanceBetween = GeolocatorPlatform.instance.distanceBetween(myUserVo!.latitude!, myUserVo.longitude!, userVo.latitude!, userVo.longitude!);
+        if (userVo.latitude != null &&
+            userVo.longitude != null &&
+            myUserVo.latitude != null &&
+            myUserVo.longitude != null) {
+          userVo.distanceBetween = GeolocatorPlatform.instance.distanceBetween(
+              myUserVo.latitude!,
+              myUserVo.longitude!,
+              userVo.latitude!,
+              userVo.longitude!);
         }
       }
 
@@ -74,12 +83,16 @@ class UserApi {
     UserVo? userVo = await UserApi.getUser();
     if (userVo == null) {
       Fluttertoast.showToast(msg: '로그인 후 사용 가능한 기능입니다.');
-      Future.delayed(Duration.zero, () => Utils.navigatorPush(Get.context!, const LoginPage(), isRemoveUntil: true));
+      Future.delayed(
+          Duration.zero,
+          () => Utils.navigatorPush(Get.context!, const LoginPage(),
+              isRemoveUntil: true));
     }
     return userVo;
   }
 
-  static Future<List<UserVo>> getUsers(UserVo myUserVo, {
+  static Future<List<UserVo>> getUsers(
+    UserVo myUserVo, {
     bool isCompleteProfile = true,
     bool isOrderByCreateDt = false,
     UserVo? ignoreUserVo,
@@ -88,31 +101,45 @@ class UserApi {
   }) async {
     Query query = _usersRef;
     if (onlyOtherUserGender != null) {
-      GenderExt otherGenderExt = onlyOtherUserGender.userGender == GenderExt.male ? GenderExt.female : GenderExt.male;
+      GenderExt otherGenderExt =
+          onlyOtherUserGender.userGender == GenderExt.male
+              ? GenderExt.female
+              : GenderExt.male;
       query = query.where('userGender', isEqualTo: otherGenderExt.name);
     }
     if (isOrderByCreateDt) {
       query = query.orderBy('createDt', descending: true);
     }
     QuerySnapshot querySnapshot = await query.get();
-    List<UserVo> userVoList = List<UserVo>.from(querySnapshot.docs.map((e) => UserVo.fromQueryDocumentSnapshot(e)));
+    List<UserVo> userVoList = List<UserVo>.from(
+        querySnapshot.docs.map((e) => UserVo.fromQueryDocumentSnapshot(e)));
 
     if (isCompleteProfile) {
-      userVoList = userVoList.where((userVo) => userVo.isCompleteProfile()).toList();
+      userVoList =
+          userVoList.where((userVo) => userVo.isCompleteProfile()).toList();
     }
     if (ignoreUserVo != null) {
-      userVoList = userVoList.where((userVo) => userVo.id != ignoreUserVo.id).toList();
+      userVoList =
+          userVoList.where((userVo) => userVo.id != ignoreUserVo.id).toList();
     }
     if (filterArgs != null) {
-      userVoList = userVoList.where((userVo) => userVo.isPassFilterArgs(filterArgs)).toList();
+      userVoList = userVoList
+          .where((userVo) => userVo.isPassFilterArgs(filterArgs))
+          .toList();
     }
 
     for (UserVo userVo in userVoList) {
       userVo.userCoins = await UserCoinApi.getUserCoins(userVo.id);
       userVo.userDiamonds = await UserDiamondApi.getUserDiamonds(userVo.id);
-      if (userVo.latitude != null && userVo.longitude != null
-          && myUserVo.latitude != null && myUserVo.longitude != null) {
-        userVo.distanceBetween = GeolocatorPlatform.instance.distanceBetween(myUserVo.latitude!, myUserVo.longitude!, userVo.latitude!, userVo.longitude!);
+      if (userVo.latitude != null &&
+          userVo.longitude != null &&
+          myUserVo.latitude != null &&
+          myUserVo.longitude != null) {
+        userVo.distanceBetween = GeolocatorPlatform.instance.distanceBetween(
+            myUserVo.latitude!,
+            myUserVo.longitude!,
+            userVo.latitude!,
+            userVo.longitude!);
       }
     }
     return userVoList;
@@ -147,19 +174,21 @@ class UserApi {
   }) async {
     // step 1
     user.userName = profileCreate.name;
-    user.userId = profileCreate.id;
-    user.userEmail = profileCreate.email;
+
     user.userGender = GenderExt.getValueOf(profileCreate.gender);
     user.birth = profileCreate.birth;
     user.location = profileCreate.location;
 
     // step 2
-    user.interestIdList = profileCreate.interestVoList.map((e) => e.id).toList();
-    user.languageIdList = profileCreate.languageVoList.map((e) => e.id).toList();
+    user.interestIdList =
+        profileCreate.interestVoList.map((e) => e.id).toList();
+    user.languageIdList =
+        profileCreate.languageVoList.map((e) => e.id).toList();
     user.idealIdList = profileCreate.idealVoList.map((e) => e.id).toList();
     user.jobIdList = profileCreate.jobVoList.map((e) => e.id).toList();
     user.hobbyIdList = profileCreate.hobbyVoList.map((e) => e.id).toList();
-    user.characterIdList = profileCreate.characterVoList.map((e) => e.id).toList();
+    user.characterIdList =
+        profileCreate.characterVoList.map((e) => e.id).toList();
 
     // step 3
     user.imageUrlList = profileCreate.imageUrlList;
@@ -179,13 +208,15 @@ class UserApi {
     }
   }
 
-  static Future<void> refreshMyLocation(BuildContext context, {
+  static Future<void> refreshMyLocation(
+    BuildContext context, {
     Position? existCurrentPosition,
   }) async {
     UserVo? userVo = await UserApi.getUser();
     if (userVo == null) return;
 
-    Position? currentPosition = existCurrentPosition ?? await Utils.getCurrentLocationPosition(context: context);
+    Position? currentPosition = existCurrentPosition ??
+        await Utils.getCurrentLocationPosition(context: context);
     if (currentPosition == null) return;
     double latitude = currentPosition.latitude;
     double longitude = currentPosition.longitude;
@@ -196,8 +227,10 @@ class UserApi {
     });
   }
 
-  static Future<void> updateMsgCoinByDebounce(String userId, int msgCoin) async {
-    EasyDebounce.debounce('updateMsgCoinByDebounce', const Duration(milliseconds: 500), () async {
+  static Future<void> updateMsgCoinByDebounce(
+      String userId, int msgCoin) async {
+    EasyDebounce.debounce(
+        'updateMsgCoinByDebounce', const Duration(milliseconds: 500), () async {
       debugPrint('updateMsgCoinByDebounce($userId, $msgCoin)');
       await _usersRef.doc(userId).update({
         'msgCoin': msgCoin,
@@ -205,8 +238,11 @@ class UserApi {
     });
   }
 
-  static Future<void> updateFirstMsgCoinByDebounce(String userId, int firstMsgCoin) async {
-    EasyDebounce.debounce('updateFirstMsgCoinByDebounce', const Duration(milliseconds: 500), () async {
+  static Future<void> updateFirstMsgCoinByDebounce(
+      String userId, int firstMsgCoin) async {
+    EasyDebounce.debounce(
+        'updateFirstMsgCoinByDebounce', const Duration(milliseconds: 500),
+        () async {
       debugPrint('updateFirstMsgCoinByDebounce($userId, $firstMsgCoin)');
       await _usersRef.doc(userId).update({
         'firstMsgCoin': firstMsgCoin,
@@ -222,7 +258,8 @@ class UserApi {
     });
   }
 
-  static Future<void> updateUserLevel(String userId, {
+  static Future<void> updateUserLevel(
+    String userId, {
     int? level,
     int? levelCoin,
     int? levelDiamond,
@@ -243,14 +280,16 @@ class UserApi {
   static Future<void> initUserLevels() async {
     Logger().d('initUserLevels start');
     QuerySnapshot querySnapshot = await _usersRef.get();
-    List<UserVo> users = List<UserVo>.from(querySnapshot.docs.map((e) => UserVo.fromQueryDocumentSnapshot(e)));
+    List<UserVo> users = List<UserVo>.from(
+        querySnapshot.docs.map((e) => UserVo.fromQueryDocumentSnapshot(e)));
     for (UserVo user in users) {
       user.userCoins = await UserCoinApi.getUserCoins(user.id);
       user.userDiamonds = await UserDiamondApi.getUserDiamonds(user.id);
 
       int levelCoin = user.getUseTotalCoin();
       int levelDiamond = user.getUseTotalDiamond();
-      LevelValueExt levelValueExt = LevelValueExt.getLevelByUsedPoint(levelCoin, levelDiamond);
+      LevelValueExt levelValueExt =
+          LevelValueExt.getLevelByUsedPoint(levelCoin, levelDiamond);
 
       await _usersRef.doc(user.id).update({
         'level': levelValueExt.level,

@@ -8,8 +8,7 @@ import 'package:flutter_metalk/model/language_vo.dart';
 class ProfileCreate {
   // step 1
   String name;
-  String id;
-  String email;
+
   String gender;
   String birth;
   String location;
@@ -29,8 +28,6 @@ class ProfileCreate {
 
   ProfileCreate({
     required this.name,
-    required this.id,
-    required this.email,
     required this.gender,
     required this.birth,
     required this.location,

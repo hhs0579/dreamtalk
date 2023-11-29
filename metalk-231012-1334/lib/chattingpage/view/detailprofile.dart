@@ -721,7 +721,7 @@ class _DetailProfilePageState extends State<DetailProfilePage> {
                               ContainerWidget(
                                 onTap: () => {},
                                 isChecked: false,
-                                image: item.iconUrl,
+                            
                                 title: item.title,
                               ),
                             ],

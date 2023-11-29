@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_metalk/apis/user_api.dart';
 import 'package:flutter_metalk/auth/phoneprofile.dart';
+import 'package:flutter_metalk/colors/colors.dart';
 import 'package:flutter_metalk/components/loading.dart';
 import 'package:flutter_metalk/components/text_padding.dart';
 import 'package:flutter_metalk/utils/firebase_utils.dart';
@@ -30,7 +31,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
   final int _verifyTimeoutSecond = 120;
   late String _userEmail;
   bool _isVerifyingCode = false;
-
+  bool a = false;
   @override
   void initState() {
     super.initState();
@@ -55,37 +56,99 @@ class _PhoneAuthState extends State<PhoneAuth> {
               ),
             ),
             backgroundColor: Colors.white,
+            centerTitle: true,
             elevation: 0.0,
             title: const Text(
               '휴대전화 인증',
               style: TextStyle(
                 color: Colors.black,
-                fontWeight: FontWeight.w500,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          body: Stack(
+          body: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0, top: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(width: double.infinity,),
-                    if (_verificationId == null)...[
-                      ..._widgetSend(),
-                    ]else...[
-                      ..._widgetVerifyCode(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0, top: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              width: double.infinity,
+                            ),
+                            if (_verificationId == null) ...[
+                              ..._widgetSend(),
+                            ] else ...[
+                              ..._widgetVerifyCode(),
+                            ],
+                          ],
+                        ),
+                      ),
+                      if (_isSendingCode || _isVerifyingCode) ...[
+                        Positioned.fill(
+                            child: Container(
+                          color: Colors.black.withOpacity(.7),
+                          child: const Center(
+                            child: Loading(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
-              if (_isSendingCode || _isVerifyingCode)...[
-                Positioned.fill(child: Container(
-                  color: Colors.black.withOpacity(.7),
-                  child: const Center(child: Loading(color: Colors.white,),),
-                )),
-              ],
+              a
+                  ? GestureDetector(
+                      onTap: () => _verifyCode(),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          color: _iscode()
+                              ? ColorList.primary
+                              : const Color(0xffE6E6F6),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            '인증하기',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: () => _onSendVerify(),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          color: _isAblePhone()
+                              ? ColorList.primary
+                              : const Color(0xffE6E6F6),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            '확인',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
             ],
           ),
         ),
@@ -109,13 +172,46 @@ class _PhoneAuthState extends State<PhoneAuth> {
 
   List<Widget> _widgetVerifyCode() {
     return [
-      const Text(
-        '보내드린 인증번호\n6자리를 입력해주세요',
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text(
+                '보내드린 ',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              Text(
+                '인증번호 6자리',
+                style: TextStyle(
+                  color: ColorList.primary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              const Text(
+                '를',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          ),
+          const Text(
+            '입력해주세요',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ],
       ),
       const SizedBox(
         height: 30,
@@ -129,140 +225,115 @@ class _PhoneAuthState extends State<PhoneAuth> {
       const SizedBox(
         height: 10,
       ),
-      Container(
-        width: MediaQuery.of(context).size.width / 1.1,
-        child: TextFormField(
-          controller: _codeController,
-          focusNode: _codeFocusNode,
-          maxLength: 6,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-              borderSide: BorderSide(
-                color: Colors.black,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-              borderSide: BorderSide(
-                color: Colors.black,
-              ),
-            ),
-            hintText: '인증번호 6자리',
-            hintStyle: TextStyle(
-              fontSize: 13.0,
-            ),
-          ),
-          onChanged: ((value) => setState(() => {})),
-        ),
-      ),
-      const SizedBox(height: 5,),
-      TextPadding('남은 시간 $_remainTimeoutSecond초', fontSize: 12,),
-      const SizedBox(
-        height: 20,
-      ),
-      GestureDetector(
-        onTap: () => _verifyCode(),
-        child: Container(
-          width: MediaQuery.of(context).size.width / 1.1,
-          height: 50,
-          decoration: BoxDecoration(
-            color: _codeController.text.isNotEmpty ? const Color.fromARGB(
-              255,
-              21,
-              213,
-              213,
-            ) : const Color(0xffB1EEEC),
-            borderRadius: BorderRadius.circular(
-              15,
-            ),
-          ),
-          child: const Center(
-            child: Text(
-              '확인',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 17.0,
-              ),
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.question_mark,
-            size: 13,
-          ),
-          const Text(
-            '인증문자를 받지 못하셨나요?',
-            style: TextStyle(
-              fontSize: 13.0,
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 1.1,
+            child: TextFormField(
+              controller: _codeController,
+              focusNode: _codeFocusNode,
+              maxLength: 6,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                hintText: '인증번호 6자리',
+                hintStyle: TextStyle(
+                  fontSize: 13.0,
+                ),
+              ),
+              onChanged: ((value) => setState(() => {})),
             ),
+          ),
+          TextPadding(
+            '남은 시간 $_remainTimeoutSecond초',
+            fontSize: 12,
           ),
           const SizedBox(
-            width: 10,
+            height: 20,
           ),
-          GestureDetector(
-            onTap: () => _resendVerifyCode(),
-            child: Column(
-              children: [
-                const Text(
-                  '인증문자 재발송',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 13.0,
-                    fontWeight: FontWeight.w600,
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                '인증문자를 받지 못하셨나요?',
+                style: TextStyle(fontSize: 13.0, color: ColorList.grey),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                onTap: () => _resendVerifyCode(),
+                child: Column(
+                  children: [
+                    const Text(
+                      '인증문자 재발송',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Container(
+                      color: Colors.grey,
+                      width: MediaQuery.of(context).size.width / 4.7,
+                      height: 1,
+                    ),
+                  ],
                 ),
-                Container(
-                  color: Colors.grey,
-                  width: MediaQuery.of(context).size.width / 4.7,
-                  height: 1,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      const SizedBox(
+        height: 20,
       ),
     ];
   }
 
   List<Widget> _widgetSend() {
     return [
-      const Text(
-        '휴대폰 번호를 인증해주세요!',
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
+      Row(
+        children: [
+          Text(
+            '휴대폰 번호',
+            style: TextStyle(
+              color: ColorList.primary,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+          ),
+          const Text(
+            '를 인증해주세요!',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+          ),
+        ],
       ),
       const SizedBox(
-        height: 20,
+        height: 50,
       ),
       const Text(
         '휴대폰 번호',
         style: TextStyle(
           color: Colors.black,
-          fontWeight: FontWeight.w500,
-          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
         ),
       ),
       const SizedBox(
         height: 20,
       ),
-      Container(
+      SizedBox(
         width: MediaQuery.of(context).size.width / 1.1,
         child: TextFormField(
           controller: _phoneController,
@@ -270,23 +341,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(
             //누를떄 컨테이너 모양
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-              borderSide: BorderSide(
-                color: Colors.black,
-              ),
-            ),
-            //누르기 전 컨테이너 모양
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-              borderSide: BorderSide(
-                color: Colors.black,
-              ),
-            ),
+
             hintText: '- 없이 숫자만 입력',
 
             hintStyle: TextStyle(
@@ -299,39 +354,15 @@ class _PhoneAuthState extends State<PhoneAuth> {
       const SizedBox(
         height: 20,
       ),
-      GestureDetector(
-        onTap: () => _onSendVerify(),
-        child: Container(
-          width: MediaQuery.of(context).size.width / 1.1,
-          height: 50,
-          decoration: BoxDecoration(
-            color: _isAblePhone() ? const Color.fromARGB(
-              255,
-              21,
-              213,
-              213,
-            ) : const Color(0xffB1EEEC),
-            borderRadius: BorderRadius.circular(
-              15,
-            ),
-          ),
-          child: const Center(
-            child: Text(
-              '인증문자 받기',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 17.0,
-              ),
-            ),
-          ),
-        ),
-      ),
     ];
   }
 
   bool _isAblePhone() {
     return _phoneController.text.isNotEmpty;
+  }
+
+  bool _iscode() {
+    return _codeController.text.isNotEmpty;
   }
 
   @override
@@ -377,6 +408,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
       setState(() {
         _codeController.text = '';
         _isSendingCode = false;
+        a = true;
       });
       setState(() {
         _verificationId = verificationId;
@@ -415,14 +447,18 @@ class _PhoneAuthState extends State<PhoneAuth> {
       verificationFailed: (FirebaseAuthException error) {
         debugPrint('verificationFailed()');
         Logger().i(error);
-        Fluttertoast.showToast(msg: '인증 번호 발송에 실패하였습니다.\n오류 코드: ${error.code}\n메시지: ${error.message}');
+        Fluttertoast.showToast(
+            msg:
+                '인증 번호 발송에 실패하였습니다.\n오류 코드: ${error.code}\n메시지: ${error.message}');
       },
       codeSent: (String verificationId, int? forceResendingToken) {
-        debugPrint('codeSent() - verificationId: $verificationId, forceResendingToken: $forceResendingToken');
+        debugPrint(
+            'codeSent() - verificationId: $verificationId, forceResendingToken: $forceResendingToken');
         _verifyPhoneCodeSent(verificationId, forceResendingToken);
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        debugPrint('codeAutoRetrievalTimeout() - verificationId: $verificationId');
+        debugPrint(
+            'codeAutoRetrievalTimeout() - verificationId: $verificationId');
         _verifyPhoneTimeoutEvent();
       },
       timeout: Duration(seconds: _verifyTimeoutSecond),
@@ -476,12 +512,14 @@ class _PhoneAuthState extends State<PhoneAuth> {
       );
 
       Fluttertoast.showToast(msg: '인증되었습니다.');
-      Future.delayed(Duration.zero, () => Navigator.pushReplacement<void, void>(
-        context,
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => const PhoneProfile(),
-        ),
-      ));
+      Future.delayed(
+          Duration.zero,
+          () => Navigator.pushReplacement<void, void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const PhoneProfile(),
+                ),
+              ));
     } catch (e) {
       Fluttertoast.showToast(msg: '인증번호가 다릅니다.\n정확한 인증번호를 입력해주세요.');
     }
