@@ -60,7 +60,7 @@ dependencies:
   provider: ^6.0.5
   get: ^4.6.5
   image_picker: ^1.0.2
-  another_audio_recorder: ^1.0.1
+  another_audio_recorder:
   just_audio: ^0.9.34
   intl: ^0.17.0
   geolocator: ^10.0.0

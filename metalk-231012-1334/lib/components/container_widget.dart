@@ -34,10 +34,7 @@ class ContainerWidget extends StatelessWidget {
                   250,
                 ),
           border: Border.all(
-            color: isChecked
-                ? const Color(0xff6C5FBC)
-                : const Color.fromARGB(255, 245, 245, 245),
-          ),
+              color: isChecked ? const Color(0xff6C5FBC) : ColorList.grey),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: Row(

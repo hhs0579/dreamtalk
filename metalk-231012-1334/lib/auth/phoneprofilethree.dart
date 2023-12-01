@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_metalk/apis/firabase_storage_api.dart';
 import 'package:flutter_metalk/apis/user_api.dart';
 import 'package:flutter_metalk/bottomnavigation/root_tab.dart';
+import 'package:flutter_metalk/colors/colors.dart';
 import 'package:flutter_metalk/components/image_padding.dart';
 import 'package:flutter_metalk/components/loading.dart';
 import 'package:flutter_metalk/extentions/audio_state_ext.dart';
@@ -88,104 +89,124 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Stack(
             children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 0.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: SizedBox(
-                          width: ScreenUtil().setWidth(
-                            335,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 20),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: SizedBox(
+                        width: ScreenUtil().setWidth(
+                          335,
+                        ),
+                        height: ScreenUtil().setHeight(
+                          8,
+                        ),
+                        child: LinearProgressIndicator(
+                          value: 1.0,
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            229,
+                            229,
+                            229,
                           ),
-                          height: ScreenUtil().setHeight(
-                            8,
-                          ),
-                          child: const LinearProgressIndicator(
-                            value: 1.0,
-                            backgroundColor: Color.fromARGB(
-                              255,
-                              229,
-                              229,
-                              229,
-                            ),
-                            color: Colors.black45,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Color.fromARGB(
-                                255,
-                                3,
-                                201,
-                                195,
+                          color: Colors.black45,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(ColorList.primary),
+                          minHeight: 5.0,
+                          semanticsLabel: 'semanticsLabel',
+                          semanticsValue: 'semanticsValue',
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              '당신',
+                              style: TextStyle(
+                                color: ColorList.primary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil().setSp(
+                                  20,
+                                ),
                               ),
                             ),
-                            minHeight: 5.0,
-                            semanticsLabel: 'semanticsLabel',
-                            semanticsValue: 'semanticsValue',
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: ScreenUtil().setHeight(
-                          6,
-                        ),
-                        right: ScreenUtil().setWidth(
-                          20,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            '3/3',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: ScreenUtil().setSp(
-                                12,
+                            Text(
+                              '을',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil().setSp(
+                                  20,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      '당신을 보여주세요!',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: ScreenUtil().setSp(
-                          20,
+                          ],
                         ),
-                      ),
+                        Text(
+                          '보여주세요',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil().setSp(
+                              20,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: ScreenUtil().setHeight(
-                        2,
-                      ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(
+                      12,
                     ),
-                    Text(
-                      '당신의 매력을 어필해 보세요!',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: ScreenUtil().setSp(14),
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18),
+                    child: Row(
+                      children: [
+                        Text(
+                          '당신의 매력',
+                          style: TextStyle(
+                            color: ColorList.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil().setSp(14),
+                          ),
+                        ),
+                        Text(
+                          '을 어필해 보세요!',
+                          style: TextStyle(
+                            color: ColorList.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: ScreenUtil().setSp(14),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: ScreenUtil().setHeight(
-                        24,
-                      ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(
+                      24,
                     ),
-                    Expanded(
-                        child: SingleChildScrollView(
+                  ),
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 18),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -250,12 +271,7 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
                                         color: index == 0
-                                            ? const Color.fromARGB(
-                                                255,
-                                                243,
-                                                252,
-                                                252,
-                                              )
+                                            ? const Color(0xffe7defc)
                                             : const Color.fromARGB(
                                                 255,
                                                 245,
@@ -264,13 +280,7 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                                               ),
                                         border: index == 0
                                             ? Border.all(
-                                                color: const Color.fromARGB(
-                                                  255,
-                                                  3,
-                                                  201,
-                                                  195,
-                                                ),
-                                              )
+                                                color: ColorList.primary)
                                             : null,
                                       ),
                                       clipBehavior: Clip.antiAlias,
@@ -286,12 +296,7 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                                                 child: Icon(
                                                   Icons.camera_alt_rounded,
                                                   color: index == 0
-                                                      ? const Color.fromARGB(
-                                                          255,
-                                                          177,
-                                                          238,
-                                                          236,
-                                                        )
+                                                      ? ColorList.primary
                                                       : const Color.fromARGB(
                                                           255,
                                                           212,
@@ -318,22 +323,16 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                                                   ),
                                                 ),
                                                 child: Container(
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(5),
-                                                      bottomRight:
-                                                          Radius.circular(5),
-                                                    ),
-                                                    color: Color.fromARGB(
-                                                      255,
-                                                      3,
-                                                      201,
-                                                      195,
-                                                    ),
-                                                  ),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .only(
+                                                        bottomLeft:
+                                                            Radius.circular(5),
+                                                        bottomRight:
+                                                            Radius.circular(5),
+                                                      ),
+                                                      color: ColorList.primary),
                                                   width: ScreenUtil().setWidth(
                                                     58,
                                                   ),
@@ -375,7 +374,7 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                             ),
                           ),
                           Text(
-                            '설명',
+                            '내 소개',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: ScreenUtil().setSp(
@@ -413,20 +412,59 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                               2,
                             ),
                           ),
-                          Text(
-                            '최소 5초, 최대 10초까지 등록할 수 있어요.',
-                            style: TextStyle(
-                              color: const Color.fromARGB(
-                                255,
-                                82,
-                                82,
-                                82,
+                          Row(
+                            children: [
+                              Container(
+                                width: 5,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: ColorList.grey,
+                                  borderRadius: BorderRadius.circular(
+                                    100,
+                                  ),
+                                ),
                               ),
-                              fontSize: ScreenUtil().setSp(
-                                14,
+                              const SizedBox(
+                                width: 10,
                               ),
-                              fontWeight: FontWeight.w500,
-                            ),
+                              Text(
+                                '음성 메세지를 수정하려면 새로 등록해주세요',
+                                style: TextStyle(
+                                  color: ColorList.grey,
+                                  fontSize: ScreenUtil().setSp(
+                                    12,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                width: 5,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: ColorList.grey,
+                                  borderRadius: BorderRadius.circular(
+                                    100,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                '최대 5초, 10초까지 등록할 수 있어요',
+                                style: TextStyle(
+                                  color: ColorList.grey,
+                                  fontSize: ScreenUtil().setSp(
+                                    12,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: ScreenUtil().setHeight(
@@ -435,12 +473,7 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(
-                                255,
-                                245,
-                                245,
-                                245,
-                              ),
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(
                                 12,
                               ),
@@ -454,17 +487,20 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                             child: Stack(
                               children: [
                                 Container(
+                                  margin: const EdgeInsets.only(left: 10),
                                   decoration: BoxDecoration(
-                                    color: const Color.fromARGB(
-                                      255,
-                                      250,
-                                      250,
-                                      250,
-                                    ),
-                                    borderRadius: BorderRadius.circular(
-                                      12,
-                                    ),
-                                  ),
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                        12,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: ColorList.grey,
+                                          offset: const Offset(0, 1), // 그림자의 위치
+                                          blurRadius: 1.0, // 그림자의 흐린 정도
+                                          spreadRadius: 1.0, // 그림자의 확장 정도
+                                        ),
+                                      ]),
                                   height: ScreenUtil().setHeight(
                                     60,
                                   ),
@@ -509,8 +545,9 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                                   top: ScreenUtil().setHeight(
                                     14,
                                   ),
-                                  child: SvgPicture.asset(
-                                    "assets/image/radio.svg",
+                                  child: Image.asset(
+                                    "assets/image/radio.png",
+                                    scale: 2,
                                   ),
                                 ),
                                 Positioned(
@@ -550,9 +587,9 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                                   ),
                                 ),
                                 Positioned(
-                                  top: ScreenUtil().setHeight(72),
+                                  top: ScreenUtil().setHeight(80),
                                   left: ScreenUtil().setWidth(
-                                    86,
+                                    72,
                                   ),
                                   child: GestureDetector(
                                     onTap: () async {
@@ -621,10 +658,10 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                                 ),
                                 Positioned(
                                   top: ScreenUtil().setHeight(
-                                    72,
+                                    80,
                                   ),
                                   left: ScreenUtil().setWidth(
-                                    184,
+                                    170,
                                   ),
                                   child: GestureDetector(
                                     onTap: () async {
@@ -644,13 +681,9 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: _recordeFile != null
-                                            ? const Color(0xff03C9C3)
+                                            ? ColorList.primary
                                             : const Color.fromARGB(
-                                                255,
-                                                217,
-                                                247,
-                                                246,
-                                              ),
+                                                255, 190, 167, 255),
                                         borderRadius: BorderRadius.circular(
                                           100,
                                         ),
@@ -691,48 +724,67 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
                           ),
                         ],
                       ),
-                    )),
-                    GestureDetector(
-                      onTap: () => _onSubmit(),
-                      child: Container(
-                        width: ScreenUtil().setWidth(
-                          335,
-                        ),
-                        height: ScreenUtil().setHeight(
-                          56,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(
-                            255,
-                            3,
-                            201,
-                            195,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            16,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '완료',
-                            style: TextStyle(
-                              color: const Color.fromARGB(
-                                255,
-                                255,
-                                255,
-                                255,
+                    ),
+                  )),
+                  (_images.first != null &&
+                          _description != null &&
+                          _recordeFile != null)
+                      ? GestureDetector(
+                          onTap: () => _onSubmit(),
+                          child: Container(
+                            width: double.infinity,
+                            height: ScreenUtil().setHeight(
+                              70,
+                            ),
+                            decoration: BoxDecoration(
+                              color: ColorList.primary,
+                            ),
+                            child: Center(
+                              child: Text(
+                                '완료',
+                                style: TextStyle(
+                                  color: const Color.fromARGB(
+                                    255,
+                                    255,
+                                    255,
+                                    255,
+                                  ),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(
+                                    16,
+                                  ),
+                                ),
                               ),
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(
-                                16,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          width: double.infinity,
+                          height: ScreenUtil().setHeight(
+                            70,
+                          ),
+                          decoration: const BoxDecoration(
+                            color: Color(0xffE6E6F6),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '완료',
+                              style: TextStyle(
+                                color: const Color.fromARGB(
+                                  255,
+                                  255,
+                                  255,
+                                  255,
+                                ),
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil().setSp(
+                                  16,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
               if (_isProcessingSubmit) ...[
                 Positioned.fill(
@@ -845,6 +897,7 @@ class _PhoneProfileThreeState extends State<PhoneProfileThree> {
             debugPrint('complete audio');
             setState(() => _audioStateExt = AudioStateExt.stop);
           }
+          // 5초 미만인 경우에 대한 추가 검사
         });
         _audioPlayer!.positionStream.listen((event) {
           setState(() => _playDuration = event);

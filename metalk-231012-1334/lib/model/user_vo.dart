@@ -66,25 +66,21 @@ class UserVo {
     required this.createDt,
     this.lastLoginDt,
     this.blockEndDt,
-
     this.userName,
     this.userId,
     this.userEmail,
     this.userGender = GenderExt.male,
     this.birth,
     this.location,
-
     this.interestIdList,
     this.languageIdList,
     this.idealIdList,
     this.jobIdList,
     this.hobbyIdList,
     this.characterIdList,
-
     this.imageUrlList,
     this.description,
     this.voiceMessageUrl,
-
     this.isOnline = false,
     this.latitude,
     this.longitude,
@@ -92,7 +88,6 @@ class UserVo {
     this.firstMsgCoin = GlobalConfig.defaultMsgCoin,
     this.fbToken,
     this.isVerifyExchange = false,
-
     this.level = 1,
     this.levelCoin = 0,
     this.levelDiamond = 0,
@@ -111,33 +106,44 @@ class UserVo {
       createDt: json['createDt'].toDate(),
       lastLoginDt: lastLoginDt,
       blockEndDt: json['blockEndDt']?.toDate(),
-
       userName: json['userName'],
       userId: json['userId'],
       userEmail: json['userEmail'],
       userGender: GenderExt.getValueOf(json['userGender']),
       birth: json['birth'],
       location: json['location'],
-
-      interestIdList: json['interestIdList'] != null ? List<String>.from(json['interestIdList'].map((e) => e)) : null,
-      languageIdList: json['languageIdList'] != null ? List<String>.from(json['languageIdList'].map((e) => e)) : null,
-      idealIdList: json['idealIdList'] != null ? List<String>.from(json['idealIdList'].map((e) => e)) : null,
-      jobIdList: json['jobIdList'] != null ? List<String>.from(json['jobIdList'].map((e) => e)) : null,
-      hobbyIdList: json['hobbyIdList'] != null ? List<String>.from(json['hobbyIdList'].map((e) => e)) : null,
-      characterIdList: json['characterIdList'] != null ? List<String>.from(json['characterIdList'].map((e) => e)) : null,
-
-      imageUrlList: json['imageUrlList'] != null ? List<String>.from(json['imageUrlList'].map((e) => e)) : null,
+      interestIdList: json['interestIdList'] != null
+          ? List<String>.from(json['interestIdList'].map((e) => e))
+          : null,
+      languageIdList: json['languageIdList'] != null
+          ? List<String>.from(json['languageIdList'].map((e) => e))
+          : null,
+      idealIdList: json['idealIdList'] != null
+          ? List<String>.from(json['idealIdList'].map((e) => e))
+          : null,
+      jobIdList: json['jobIdList'] != null
+          ? List<String>.from(json['jobIdList'].map((e) => e))
+          : null,
+      hobbyIdList: json['hobbyIdList'] != null
+          ? List<String>.from(json['hobbyIdList'].map((e) => e))
+          : null,
+      characterIdList: json['characterIdList'] != null
+          ? List<String>.from(json['characterIdList'].map((e) => e))
+          : null,
+      imageUrlList: json['imageUrlList'] != null
+          ? List<String>.from(json['imageUrlList'].map((e) => e))
+          : null,
       description: json['description'],
       voiceMessageUrl: json['voiceMessageUrl'],
-
-      isOnline: lastLoginDt != null && lastLoginDt.difference(DateTime.now()).inSeconds.abs() <= GlobalConfig.onlineLastLoginSecond,
+      isOnline: lastLoginDt != null &&
+          lastLoginDt.difference(DateTime.now()).inSeconds.abs() <=
+              GlobalConfig.onlineLastLoginSecond,
       latitude: json['latitude'],
       longitude: json['longitude'],
       msgCoin: json['msgCoin'] ?? GlobalConfig.defaultMsgCoin,
       firstMsgCoin: json['firstMsgCoin'] ?? GlobalConfig.defaultMsgCoin,
       fbToken: json['fbToken'],
       isVerifyExchange: json['isVerifyExchange'] ?? false,
-
       level: json['level'] ?? 1,
       levelCoin: json['levelCoin'] ?? 0,
       levelDiamond: json['levelDiamond'] ?? 0,
@@ -145,69 +151,61 @@ class UserVo {
   }
 
   Map<String, dynamic> toMap() => {
-    'loginType': loginType,
-    'email': email,
-    'phone': phone,
-    'isVerifyPhone': isVerifyPhone,
-    'createDt': createDt,
-    'lastLoginDt': lastLoginDt,
-
-    'userName': userName,
-    'userId': userId,
-    'userEmail': userEmail,
-    'userGender': userGender.name,
-    'birth': birth,
-    'location': location,
-
-    'interestIdList': interestIdList,
-    'languageIdList': languageIdList,
-    'idealIdList': idealIdList,
-    'jobIdList': jobIdList,
-    'hobbyIdList': hobbyIdList,
-    'characterIdList': characterIdList,
-
-    'imageUrlList': imageUrlList,
-    'description': description,
-    'voiceMessageUrl': voiceMessageUrl,
-  };
+        'loginType': loginType,
+        'email': email,
+        'phone': phone,
+        'isVerifyPhone': isVerifyPhone,
+        'createDt': createDt,
+        'lastLoginDt': lastLoginDt,
+        'userName': userName,
+        'userId': userId,
+        'userEmail': userEmail,
+        'userGender': userGender.name,
+        'birth': birth,
+        'location': location,
+        'interestIdList': interestIdList,
+        'languageIdList': languageIdList,
+        'idealIdList': idealIdList,
+        'jobIdList': jobIdList,
+        'hobbyIdList': hobbyIdList,
+        'characterIdList': characterIdList,
+        'imageUrlList': imageUrlList,
+        'description': description,
+        'voiceMessageUrl': voiceMessageUrl,
+      };
 
   bool isCompleteProfile() {
     bool isCompleteStep1 =
-        userName != null
-        && userId != null
-        && userEmail != null
-        && birth != null
-        && location != null
-    ;
+        userName != null && birth != null && location != null;
 
-    bool isCompleteStep2 =
-        (interestIdList ?? []).isNotEmpty
-      && (languageIdList ?? []).isNotEmpty
-      && (idealIdList ?? []).isNotEmpty
-      && (jobIdList ?? []).isNotEmpty
-      && (hobbyIdList ?? []).isNotEmpty
-      && (characterIdList ?? []).isNotEmpty
-    ;
+    bool isCompleteStep2 = (interestIdList ?? []).isNotEmpty &&
+        (languageIdList ?? []).isNotEmpty &&
+        (idealIdList ?? []).isNotEmpty &&
+        (jobIdList ?? []).isNotEmpty &&
+        (hobbyIdList ?? []).isNotEmpty &&
+        (characterIdList ?? []).isNotEmpty;
 
     bool isCompleteStep3 =
-        (imageUrlList ?? []).isNotEmpty
-      && description != null
-    ;
+        (imageUrlList ?? []).isNotEmpty && description != null;
 
     return isCompleteStep1 && isCompleteStep2 && isCompleteStep3;
   }
 
-  String get profileImgUrl => imageUrlList?.first ?? GlobalConfig.defaultUserImgUrl;
-  DateTime? get birthDt => birth == null ? null : DateTime.parse('${birth!.substring(0, 4)}-${birth!.substring(4, 6)}-${birth!.substring(6, 8)}');
+  String get profileImgUrl =>
+      imageUrlList?.first ?? GlobalConfig.defaultUserImgUrl;
+  DateTime? get birthDt => birth == null
+      ? null
+      : DateTime.parse(
+          '${birth!.substring(0, 4)}-${birth!.substring(4, 6)}-${birth!.substring(6, 8)}');
   int? get age => birthDt == null ? null : Utils.calculateAge(birthDt!);
 
   bool isPassFilterArgs(FilterArgs filterArgs) {
-    return filterArgs.isCheckAge(age)
-        && filterArgs.isCheckLanguage(languageIdList, filterArgs.languageVoList)
-        && filterArgs.isCheckLanguage(interestIdList, filterArgs.interestVoList)
-        && filterArgs.isCheckLanguage(jobIdList, filterArgs.jobVoList)
-        && filterArgs.isCheckLanguage(hobbyIdList, filterArgs.hobbyVoList)
-        && filterArgs.isCheckLanguage(characterIdList, filterArgs.characterVoList);
+    return filterArgs.isCheckAge(age) &&
+        filterArgs.isCheckLanguage(languageIdList, filterArgs.languageVoList) &&
+        filterArgs.isCheckLanguage(interestIdList, filterArgs.interestVoList) &&
+        filterArgs.isCheckLanguage(jobIdList, filterArgs.jobVoList) &&
+        filterArgs.isCheckLanguage(hobbyIdList, filterArgs.hobbyVoList) &&
+        filterArgs.isCheckLanguage(characterIdList, filterArgs.characterVoList);
   }
 
   String? firstLanguage(BuildContext context) {
@@ -255,7 +253,8 @@ class UserVo {
   int getUseTotalDiamond() {
     int resultCnt = 0;
 
-    for (UserDiamondVo item in userDiamonds.where((element) => element.isUsed)) {
+    for (UserDiamondVo item
+        in userDiamonds.where((element) => element.isUsed)) {
       resultCnt += item.cnt;
     }
 
@@ -264,7 +263,8 @@ class UserVo {
 
   String get distanceStr => Utils.getDistanceResponseString(distanceBetween);
   LevelExt get levelExt => LevelExt.getLevelExtByLevel(level);
-  LevelValueExt get levelValueExt => LevelValueExt.getCurrentLevelByLevel(level);
+  LevelValueExt get levelValueExt =>
+      LevelValueExt.getCurrentLevelByLevel(level);
 
   bool get isBlock => blockEndDt != null && blockEndDt!.isAfter(DateTime.now());
 }

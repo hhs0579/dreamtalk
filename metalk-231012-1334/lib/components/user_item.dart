@@ -14,7 +14,8 @@ class UserItem extends StatelessWidget {
   final bool isChatPage;
   final bool isDiamondGiftPage;
 
-  const UserItem({Key? key,
+  const UserItem({
+    Key? key,
     required this.userVo,
     this.isChatPage = false,
     this.isDiamondGiftPage = false,
@@ -22,22 +23,15 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Container(
-      width: double.infinity,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
         color: Colors.white,
-        borderRadius: isChatPage == false && isDiamondGiftPage == false ? BorderRadius.circular(20) : null,
-        boxShadow: isChatPage == false && isDiamondGiftPage == false ? [
-          BoxShadow(
-            color: const Color(0xffD9D9D9).withOpacity(.4),
-            spreadRadius: 0,
-            blurRadius: 64,
-            offset: const Offset(6, -2),
-          ),
-        ] : null,
       ),
-      child: TextButton(
-        onPressed: () => Navigator.push(
+      child: InkWell(
+        onTap: () => Navigator.push(
           context,
           MaterialPageRoute<void>(
             builder: (BuildContext context) => DetailProfilePage(
@@ -46,98 +40,171 @@ class UserItem extends StatelessWidget {
             ),
           ),
         ),
-        style: CustomStyles.textButtonZeroSize(),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Stack(
-                children: [
-                  ImagePadding(
-                    userVo.profileImgUrl,
-                    isNetwork: true,
-                    width: isChatPage == false ? 64 : 48,
-                    height: isChatPage == false ? 65 : 48,
-                    isCircle: true,
-                    fit: BoxFit.cover,
-                    defaultColor: Colors.grey,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Stack(children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: ImagePadding(
+                      userVo.profileImgUrl,
+                      isNetwork: true,
+                      width: width * 0.4,
+                      height: height * 0.3,
+                      fit: BoxFit.cover,
+                      defaultColor: Colors.grey,
+                    ),
                   ),
                   Positioned(
-                    bottom: isChatPage == false ? 4 : 0,
-                    right: 0,
+                    left: 10,
+                    top: 10,
                     child: Container(
-                      width: 14,
-                      height: 14,
+                      width: 10,
+                      height: 10,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: userVo.isOnline ? HexColor('#4CE417') : HexColor('#D4D4D4'),
-                        border: Border.all(
-                          width: 2,
-                          color: Colors.white,
+                        color: userVo.isOnline
+                            ? HexColor('#4CE417')
+                            : HexColor('#D4D4D4'),
+                      ),
+                    ),  
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 5,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ImagePadding(
+                          userVo.levelExt.icon,
+                          width: 24,
+                          height: 24,
                         ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        ImagePadding(
+                          userVo.userGender.icon,
+                          width: 20,
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 50,
+                    left: 10,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            TextPadding(
+                              '${userVo.userName}',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Colors.white,
+                              height: 1,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            TextPadding(
+                              '${userVo.age}세',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Colors.white,
+                              height: 1,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: [
+                            const ImagePadding(
+                              'map-icon.png',
+                              width: 12,
+                              height: 12,
+                            ),
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            TextPadding(
+                              '${userVo.location}',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              width: 6,
+                            ),
+                            const ImagePadding(
+                              'globe-light.png',
+                              width: 12,
+                              height: 12,
+                            ),
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            TextPadding(
+                              '${userVo.firstLanguage(context)}',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Positioned(
+                    bottom: 00,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xff3C3939),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                      ),
+                      width: width * 0.4,
+                      height: 40,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ImagePadding(
+                            'chat-icon.png',
+                            width: 16,
+                            height: 16,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            '채팅하기',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12),
+                          )
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
-              SizedBox(width: isChatPage == false ? 16 : 12,),
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      ImagePadding(userVo.levelExt.icon, width: 24, height: 24,),
-                      SizedBox(width: isChatPage == false ? 4 : 2,),
-                      TextPadding('${userVo.userName}, ${userVo.age}세', fontWeight: FontWeight.w600, fontSize: 16, color: Colors.black, height: 1,),
-                      SizedBox(width: isChatPage == false ? 8 : 6,),
-                      ImagePadding(userVo.userGender.icon, width: 20, height: 20),
-                    ],
-                  ),
-                  const SizedBox(height: 6,),
-                  Row(
-                    children: [
-                      const ImagePadding('map-icon.png', width: 12, height: 12,),
-                      const SizedBox(width: 2,),
-                      TextPadding('${userVo.location}', fontWeight: FontWeight.w600, fontSize: 12, color: HexColor('#525252'),),
-                      const SizedBox(width: 6,),
-                      const ImagePadding('globe-light.png', width: 12, height: 12,),
-                      const SizedBox(width: 2,),
-                      TextPadding('${userVo.firstLanguage(context)}', fontWeight: FontWeight.w600, fontSize: 12, color: HexColor('#525252'),),
-                    ],
-                  ),
-                ],
-              )),
-              if (isDiamondGiftPage == true)...[
-                const SizedBox(width: 5,),
-                CustomButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const DiamondPage())),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: HexColor('#E6FAF9'),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Center(
-                      child: ImagePadding('send-diamond.png'),
-                    ),
-                  ),
-                ),
-              ] else if (isChatPage == false)...[
-                const SizedBox(width: 5,),
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: HexColor('#E6FAF9'),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: ImagePadding('chat-icon.png', width: 16, height: 16,),
-                  ),
-                ),
+                ]),
               ],
-            ],
+            ),
           ),
         ),
       ),

@@ -287,6 +287,11 @@ class _PhoneProfileTwoState extends State<PhoneProfileTwo> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(
+                      24,
+                    ),
+                  ),
                   Expanded(
                       child: SingleChildScrollView(
                     child: Padding(
@@ -294,23 +299,35 @@ class _PhoneProfileTwoState extends State<PhoneProfileTwo> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '관심사',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(
-                                16,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '관심사',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(
+                                    16,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Container(
+                                width: ScreenUtil().setWidth(280),
+                                height: 1,
+                                color: ColorList.grey,
+                              )
+                            ],
                           ),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               2,
                             ),
                           ),
-                          const Text(
-                            '5개까지 선택할 수 있어요.',
-                          ),
+                          Text('5개까지 선택할 수 있어요.',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorList.grey)),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               12,
@@ -342,27 +359,33 @@ class _PhoneProfileTwoState extends State<PhoneProfileTwo> {
                               24,
                             ),
                           ),
-                          Text(
-                            '언어',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(
-                                16,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '언어',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(
+                                    16,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Container(
+                                width: ScreenUtil().setWidth(280),
+                                height: 1,
+                                color: ColorList.grey,
+                              )
+                            ],
                           ),
                           SizedBox(
                             height: ScreenUtil().setHeight(2),
                           ),
-                          Text(
-                            '5개까지 선택할 수 있어요.',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(
-                                14,
-                              ),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          Text('5개까지 선택할 수 있어요.',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorList.grey)),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               12,
@@ -394,28 +417,35 @@ class _PhoneProfileTwoState extends State<PhoneProfileTwo> {
                               24,
                             ),
                           ),
-                          Text(
-                            '이상형',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(
-                                16,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '이상형',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(
+                                    16,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Container(
+                                width: ScreenUtil().setWidth(280),
+                                height: 1,
+                                color: ColorList.grey,
+                              )
+                            ],
                           ),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               2,
                             ),
                           ),
-                          Text(
-                            '5개까지 선택할 수 있어요.',
-                            style: TextStyle(
-                                fontSize: ScreenUtil().setSp(
-                                  14,
-                                ),
-                                fontWeight: FontWeight.w500),
-                          ),
+                          Text('5개까지 선택할 수 있어요.',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorList.grey)),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               12,
@@ -446,29 +476,35 @@ class _PhoneProfileTwoState extends State<PhoneProfileTwo> {
                               24,
                             ),
                           ),
-                          Text(
-                            '직업',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(
-                                16,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '직업',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(
+                                    16,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Container(
+                                width: ScreenUtil().setWidth(280),
+                                height: 1,
+                                color: ColorList.grey,
+                              )
+                            ],
                           ),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               2,
                             ),
                           ),
-                          Text(
-                            '1개까지 선택할 수 있어요 (중복선택 불가능)',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(
-                                14,
-                              ),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          Text('1개까지 선택할 수 있어요 (중복선택 불가능)',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorList.grey)),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               12,
@@ -499,27 +535,33 @@ class _PhoneProfileTwoState extends State<PhoneProfileTwo> {
                               24,
                             ),
                           ),
-                          Text(
-                            '취미',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(
-                                16,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '취미',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(
+                                    16,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Container(
+                                width: ScreenUtil().setWidth(280),
+                                height: 1,
+                                color: ColorList.grey,
+                              )
+                            ],
                           ),
                           const SizedBox(
                             height: 5,
                           ),
-                          Text(
-                            '5개까지 선택할 수 있어요.',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(
-                                14,
-                              ),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          Text('5개까지 선택할 수 있어요.',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorList.grey)),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               12,
@@ -550,29 +592,35 @@ class _PhoneProfileTwoState extends State<PhoneProfileTwo> {
                               24,
                             ),
                           ),
-                          Text(
-                            '성격',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil().setSp(
-                                16,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '성격',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: ScreenUtil().setSp(
+                                    16,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Container(
+                                width: ScreenUtil().setWidth(280),
+                                height: 1,
+                                color: ColorList.grey,
+                              )
+                            ],
                           ),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               2,
                             ),
                           ),
-                          Text(
-                            '3개까지 선택할 수 있어요.',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(
-                                14,
-                              ),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          Text('3개까지 선택할 수 있어요.',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorList.grey)),
                           SizedBox(
                             height: ScreenUtil().setHeight(
                               12,
